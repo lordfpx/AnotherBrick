@@ -1,0 +1,41 @@
+{
+  "name": "AnotherBrick",
+  "version": "0.1.0",
+  "description": "Another Brick... on the web",
+  "main": "gulpfile.js",
+  "scripts": {
+    "start": "gulp",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "homepage": "",
+  "author": {
+    "name": "Thierry Philippe",
+    "email": "contact@thierryphilippe.fr"
+  },
+  "repository": {
+    "type": "MIT",
+    "url": "https://github.com/lordfpx/AnotherBrick"
+  },
+  "license": "ISC",
+  "devDependencies": {
+    "browser-sync": "^2.9.11",
+    "browserify": "^10.1.2",
+    "del": "^2.2.0",
+    "gulp": "^3.8.11",
+    "gulp-jade": "^1.1.0",
+    "gulp-jshint": "^1.11.2",
+    "gulp-sass": "^2.0.0",
+    "gulp-sequence": "^0.3.2",
+    "gulp-sourcemaps": "^1.5.2",
+    "gulp-streamify": "0.0.5",
+    "gulp-uglify": "^1.2.0",
+    "gulp-util": "^3.0.4",
+    "gulp-watch": "^4.2.4",
+    "jshint-stylish": "^2.1.0",
+    "vinyl-source-stream": "^1.1.0",
+    "watchify": "^3.2.1"
+  },
+  "dependencies": {
+    "jquery": "^2.2.0"
+  }
+}
