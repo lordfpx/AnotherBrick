@@ -58,11 +58,9 @@ ScrollTo.prototype = {
   getAnchor: function(el) {
     var location = window.location;
 
-    if (location.pathname.replace(/^\//, '') === el.pathname.replace(/^\//,
-        '') && location.hostname === el.hostname) {
+    if (location.pathname.replace(/^\//, '') === el.pathname.replace(/^\//, '') && location.hostname === el.hostname) {
       var $target = $(el.hash);
-      $target = $target.length ? $target : $('[name=' + el.hash.slice(1) +
-        ']');
+      $target = $target.length ? $target : $('[name=' + el.hash.slice(1) + ']');
 
       if ($target.length) {
         this.scroll($target);

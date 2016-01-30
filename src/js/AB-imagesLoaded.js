@@ -30,8 +30,7 @@ function imagesLoaded(images, callback) {
     var image = images[i];
     if (image.complete) {
       singleImageLoaded();
-    } else if (typeof image.naturalWidth !== 'undefined' && image.naturalWidth >
-      0) {
+    } else if (typeof image.naturalWidth !== 'undefined' && image.naturalWidth >0) {
       singleImageLoaded();
     } else {
       $(image).one('load', singleImageLoaded);

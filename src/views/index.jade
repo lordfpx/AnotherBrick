@@ -8,55 +8,44 @@ html(lang='en')
   body
     header
       h1 AB - Another Brick (on the web)
-      p(data-ab-scrollto=".scrollTo") test scroll
+
       nav
         ul
+          li
+            a(href="#scrollTo") scrollTo
           li
             a(href="#equalizer") Equalizer
           li
             a(href="#scrollTo") scrollTo
     
+    h2#scrollTo scrollTo
+    p Scroll with <strong data-ab-scrollto=".scrollTo">data-ab-scrollto=".scrollTo"</strong> or with anchor links href="#scrollTo".
+    
     h2#equalizer Equalizer
     p I know that could be acheived with flex box, but that not the point in that demo.
     p As you may have noticed, the height is defined after img are loaded.
     
-    .row.data-ab-equalizer(data-ab-equalizer="1")
-      .col.data-ab-equalizer-watch(data-ab-equalizer-watch="level1")
+    .row.data-ab-equalizer
+      .col.data-ab-equalizer-watch(data-ab-equalizer="block1")
         h3 data-ab-equalizer-watch="level1"
         p Lorem ipsum dolor sit amet,
         p consectetur adipisicing elit. Minima hic debitis ut consectetur.
         p Molestias quod dolore veniam, rem nostrum modi nulla a, et veritatis,
         
-        .col.data-ab-equalizer-watch(data-ab-equalizer-watch="level2")
+        .col.data-ab-equalizer-watch(data-ab-equalizer="block2")
           h3 data-ab-equalizer-watch="level2"
           p Lorem ipsum dolor sit amet.
 
-        .col.data-ab-equalizer-watch(data-ab-equalizer-watch="level2")
-          h3 data-ab-equalizer-watch="level2"
-          p Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sunt explicabo, repellat illum eum ex enim! Molestias qui in placeat obcaecati et saepe quibusdam veritatis deserunt, asperiores, alias impedit eum, veniam.
-          
-    .row.data-ab-equalizer(data-ab-equalizer="2")
-      .col.data-ab-equalizer-watch(data-ab-equalizer-watch="level1")
-        h3 data-ab-equalizer-watch="level1"
-        p Lorem ipsum dolor sit amet,
-        p consectetur adipisicing elit. Minima hic debitis ut consectetur.
-        p Molestias quod dolore veniam, rem nostrum modi nulla a, et veritatis,
-        
-        .col.data-ab-equalizer-watch(data-ab-equalizer-watch="level2")
-          h3 data-ab-equalizer-watch="level2"
-          p Lorem ipsum dolor sit amet.
-
-        .col.data-ab-equalizer-watch(data-ab-equalizer-watch="level2")
+        .col.data-ab-equalizer-watch(data-ab-equalizer="block2")
           h3 data-ab-equalizer-watch="level2"
           p Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sunt explicabo, repellat illum eum ex enim! Molestias qui in placeat obcaecati et saepe quibusdam veritatis deserunt, asperiores, alias impedit eum, veniam.
           img(src="http://img1.mxstatic.com/wallpapers/5b4b2205335de6b257c9d12f04e56058_large.jpeg")
 
-
-      .col.data-ab-equalizer-watch(data-ab-equalizer-watch="level1")
+      .col.data-ab-equalizer-watch(data-ab-equalizer="block1")
         h3 data-ab-equalizer-watch="level1"
         p Lorem
         
-    h2#scrollTo scrollTo
+    .scrollTo scrollTo test from <strong data-ab-scrollto=".scrollTo">data-ab-scrollto=".scrollTo"</strong>
 
 
     script(src="//code.jquery.com/jquery-2.2.0.min.js")

@@ -25,9 +25,10 @@ var deviceDetect = {
       return userAgent.match(/IEMobile/i) ? true : false;
     },
     any: function(userAgent, appVersion) {
-      return (this.Android(userAgent, appVersion) || this.BlackBerry(
-          userAgent, appVersion) || this.iOS(userAgent, appVersion) ||
-        this.Windows(userAgent, appVersion));
+      return  (this.Android(userAgent, appVersion) ||
+              this.BlackBerry(userAgent, appVersion) ||
+              this.iOS(userAgent, appVersion) ||
+              this.Windows(userAgent, appVersion));
     }
   },
 
@@ -45,13 +46,14 @@ var deviceDetect = {
 
   // https://ctrlq.org/code/19616-detect-touch-screen-javascript
   isTouch: function() {
-    return (('ontouchstart' in window) || (navigator.MaxTouchPoints > 0) ||
-      (navigator.msMaxTouchPoints > 0));
+    return  (('ontouchstart' in window) ||
+            (navigator.MaxTouchPoints > 0) ||
+            (navigator.msMaxTouchPoints > 0));
   },
 
   get: function(type, device) {
     var userAgent = navigator.userAgent,
-      appVersion = navigator.appVersion;
+        appVersion = navigator.appVersion;
 
     return this[type][device](userAgent, appVersion);
   }

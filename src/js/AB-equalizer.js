@@ -3,138 +3,77 @@
 /*
 USAGE
 
-<div data-equalizer>
-  <div data-equalizer-watch="test1">
-    Lorem ipsum dolor sit amet,
-    consectetur adipisicing elit. Minima hic debitis ut consectetur.
-    Molestias quod dolore veniam, rem nostrum modi nulla a, et veritatis, nobis quae error quidem illo ea.
-  </div>
-
-  <div data-equalizer-watch="test1">
-    Lorem
-  </div>
-
-  <div data-equalizer-watch="paragraph">
-    Lorem ipsum dolor sit amet.
-  </div>
-
-  <div data-equalizer-watch="paragraph">
-    Lorem nobis quae error quidem illo ea.Lorem nobis quae.
-  </div>
-</div>
 */
 
-function Equalizer(el, opt) {
+function Equalizer(selector) {
   if (!(this instanceof Equalizer)) {
-    return new Equalizer(el, opt);
+    return new Equalizer(selector);
   }
 
-  this.settings = $.extend({}, Equalizer.defaults, opt);
-  this.wrapper = $(el);
+  this.selector = selector;
+  this.wrapper = $(selector);
 
   if (this.wrapper.length) {
     this.init();
   }
 }
 
-Equalizer.defaults = {
-  watchers: '[data-ab-equalizer-watch]'
-};
-
 Equalizer.prototype = {
-
   init: function() {
-    var $img = this.wrapper.find('img');
-    var that = this;
+    var that = this,
+        $img = this.wrapper.find('img');
 
     if ($img.length) {
       AB.imagesLoaded($img, function() {
-        that._bindEvents();
+        that._equalize(that._getHeight());
         that._watch();
       });
       return;
     }
 
-    this._bindEvents();
+    this._equalize(this._getHeight());
     this._watch();
   },
 
   _watch: function() {
     var that = this,
-      $thisChild = this.wrapper.children(this.settings.watchers),
-      $thisChildChild = $thisChild.children(this.settings.watchers);
+        selector = this.selector,
+        randomString = Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 5);
 
-    // First, treat the deepest level
-    if ($thisChildChild.length) {
-      this._checkWatchers($thisChildChild);
-      setTimeout(that._checkWatchers($thisChild), 1);
-    } else {
-      this._checkWatchers($thisChild);
-    }
-  },
-
-  _bindEvents: function() {
-    var that = this,
-      scrollTimeout;
-
-    $(window).on('ab.equalizer.reinit', function() {
-      that.init();
-    });
-
-    $(window).on('resize.ab.equalizer', function() {
-      if (scrollTimeout) {
-        clearTimeout(scrollTimeout);
-        scrollTimeout = null;
-      }
-      scrollTimeout = setTimeout(that.watch(), 250);
+    randomString = AB.resizeEvent(selector, function(){
+      that._equalize(that._getHeight());
     });
   },
 
-  _checkWatchers: function($watchers) {
-    var that = this,
-      dataArray = [],
-      $watched;
-
-    $.each($watchers.map(function() {
-        return $(this).data('ab-equalizer-watch');
-      }).get(),
-      function(index, item) {
-        if ($.inArray(item, dataArray) === -1) {
-          dataArray.push(item);
-          $watched = that.wrapper.find('[data-ab-equalizer-watch="' +
-            item +
-            '"]');
-          that._equalize($watched, that._getHeight($watched));
-        }
-      });
-  },
-
-  _getHeight: function($el) {
-    var heights = [];
-
+  _getHeight: function() {
+    var heights = [],
+        $el = this.wrapper;
     for (var i = 0, len = $el.length; i < len; i++) {
-      heights.push($($el[i]).css('height', '').outerHeight());
+      heights.push( $($el[i]).css('min-height', '').outerHeight() );
     }
-
     return Math.max.apply(null, heights);
   },
 
-  _equalize: function($group, height) {
-    $group.innerHeight(height);
-    $(window).trigger('ab.equalizer.equalized', [$group, height]);
+  _equalize: function(height) {
+    this.wrapper.css('min-height', height);
+    $(window).trigger('ab.equalizer.equalized', [this.wrapper, height]);
   },
 
   destroy: function() {
-    $(window).off('resize.ab.equalizer scroll.ab.equalizer');
+    $(window).off('rab.equalizer.equalized');
+    this.wrapper.css('min-height', '');
   }
-
 };
 
 function equalizer(opt) {
-  var el = $('[data-ab-equalizer]');
+  var $trigger = $('[data-ab-equalizer]');
+  var $filtered = AB.fn.uniqueElByAttributeValue($trigger, 'data-ab-equalizer');
 
-  for (var i = 0, len = el.length; i < len; i++) {
-    $(el[i]).equalize = new Equalizer(el[i], opt);
+  for (var i = 0, len = $filtered.length; i < len; i++) {
+    var selectorValue = $($filtered[i]).attr('data-ab-equalizer'),
+        selector = '[data-ab-equalizer="'+ selectorValue +'"]';
+
+    selectorValue = new Equalizer(selector);
   }
 }
 

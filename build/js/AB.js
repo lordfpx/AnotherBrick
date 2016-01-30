@@ -21,6 +21,7 @@ module.exports={
   "devDependencies": {
     "browser-sync": "^2.9.11",
     "browserify": "^10.1.2",
+    "chai": "^3.4.1",
     "del": "^2.2.0",
     "gulp": "^3.8.11",
     "gulp-jade": "^1.1.0",
@@ -51,23 +52,22 @@ window.AB = {
   description:    packageJson.description,
   version:        packageJson.version,
   author:         packageJson.author,
-  
+
   about: function() {
-    console.log(this.name + ": " + this.description + " v" + this
-      .version +
-      " by " + this.author.name + " (" + this.author.email + ")");
+    console.log(this.name + ": " + this.description + " v" + this.version + " by " + this.author.name + " (" + this.author.email + ")");
   },
 
   fn:             require('../js/AB-fn'),
   easing:         require('../js/AB-easing'),
   imagesLoaded:   require('../js/AB-imagesLoaded'),
+  resizeEvent:    require('../js/AB-resizeEvent'),
   equalizer:      require('../js/AB-equalizer'),
   deviceDetect:   require('../js/AB-deviceDetect'),
   mediaQuery:     require('../js/AB-mediaQuery'),
   scrollTo:       require('../js/AB-scrollTo')
 };
 
-},{"../../package.json":1,"../js/AB-deviceDetect":3,"../js/AB-easing":4,"../js/AB-equalizer":5,"../js/AB-fn":6,"../js/AB-imagesLoaded":7,"../js/AB-mediaQuery":8,"../js/AB-scrollTo":9}],3:[function(require,module,exports){
+},{"../../package.json":1,"../js/AB-deviceDetect":3,"../js/AB-easing":4,"../js/AB-equalizer":5,"../js/AB-fn":6,"../js/AB-imagesLoaded":7,"../js/AB-mediaQuery":8,"../js/AB-resizeEvent":9,"../js/AB-scrollTo":10}],3:[function(require,module,exports){
 "use strict";
 
 /*
@@ -95,9 +95,10 @@ var deviceDetect = {
       return userAgent.match(/IEMobile/i) ? true : false;
     },
     any: function(userAgent, appVersion) {
-      return (this.Android(userAgent, appVersion) || this.BlackBerry(
-          userAgent, appVersion) || this.iOS(userAgent, appVersion) ||
-        this.Windows(userAgent, appVersion));
+      return  (this.Android(userAgent, appVersion) ||
+              this.BlackBerry(userAgent, appVersion) ||
+              this.iOS(userAgent, appVersion) ||
+              this.Windows(userAgent, appVersion));
     }
   },
 
@@ -115,13 +116,14 @@ var deviceDetect = {
 
   // https://ctrlq.org/code/19616-detect-touch-screen-javascript
   isTouch: function() {
-    return (('ontouchstart' in window) || (navigator.MaxTouchPoints > 0) ||
-      (navigator.msMaxTouchPoints > 0));
+    return  (('ontouchstart' in window) ||
+            (navigator.MaxTouchPoints > 0) ||
+            (navigator.msMaxTouchPoints > 0));
   },
 
   get: function(type, device) {
     var userAgent = navigator.userAgent,
-      appVersion = navigator.appVersion;
+        appVersion = navigator.appVersion;
 
     return this[type][device](userAgent, appVersion);
   }
@@ -299,138 +301,77 @@ module.exports = easing;
 /*
 USAGE
 
-<div data-equalizer>
-  <div data-equalizer-watch="test1">
-    Lorem ipsum dolor sit amet,
-    consectetur adipisicing elit. Minima hic debitis ut consectetur.
-    Molestias quod dolore veniam, rem nostrum modi nulla a, et veritatis, nobis quae error quidem illo ea.
-  </div>
-
-  <div data-equalizer-watch="test1">
-    Lorem
-  </div>
-
-  <div data-equalizer-watch="paragraph">
-    Lorem ipsum dolor sit amet.
-  </div>
-
-  <div data-equalizer-watch="paragraph">
-    Lorem nobis quae error quidem illo ea.Lorem nobis quae.
-  </div>
-</div>
 */
 
-function Equalizer(el, opt) {
+function Equalizer(selector) {
   if (!(this instanceof Equalizer)) {
-    return new Equalizer(el, opt);
+    return new Equalizer(selector);
   }
 
-  this.settings = $.extend({}, Equalizer.defaults, opt);
-  this.wrapper = $(el);
+  this.selector = selector;
+  this.wrapper = $(selector);
 
   if (this.wrapper.length) {
     this.init();
   }
 }
 
-Equalizer.defaults = {
-  watchers: '[data-ab-equalizer-watch]'
-};
-
 Equalizer.prototype = {
-
   init: function() {
-    var $img = this.wrapper.find('img');
-    var that = this;
+    var that = this,
+        $img = this.wrapper.find('img');
 
     if ($img.length) {
       AB.imagesLoaded($img, function() {
-        that._bindEvents();
+        that._equalize(that._getHeight());
         that._watch();
       });
       return;
     }
 
-    this._bindEvents();
+    this._equalize(this._getHeight());
     this._watch();
   },
 
   _watch: function() {
     var that = this,
-      $thisChild = this.wrapper.children(this.settings.watchers),
-      $thisChildChild = $thisChild.children(this.settings.watchers);
+        selector = this.selector,
+        randomString = Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 5);
 
-    // First, treat the deepest level
-    if ($thisChildChild.length) {
-      this._checkWatchers($thisChildChild);
-      setTimeout(that._checkWatchers($thisChild), 1);
-    } else {
-      this._checkWatchers($thisChild);
-    }
-  },
-
-  _bindEvents: function() {
-    var that = this,
-      scrollTimeout;
-
-    $(window).on('ab.equalizer.reinit', function() {
-      that.init();
-    });
-
-    $(window).on('resize.ab.equalizer', function() {
-      if (scrollTimeout) {
-        clearTimeout(scrollTimeout);
-        scrollTimeout = null;
-      }
-      scrollTimeout = setTimeout(that.watch(), 250);
+    randomString = AB.resizeEvent(selector, function(){
+      that._equalize(that._getHeight());
     });
   },
 
-  _checkWatchers: function($watchers) {
-    var that = this,
-      dataArray = [],
-      $watched;
-
-    $.each($watchers.map(function() {
-        return $(this).data('ab-equalizer-watch');
-      }).get(),
-      function(index, item) {
-        if ($.inArray(item, dataArray) === -1) {
-          dataArray.push(item);
-          $watched = that.wrapper.find('[data-ab-equalizer-watch="' +
-            item +
-            '"]');
-          that._equalize($watched, that._getHeight($watched));
-        }
-      });
-  },
-
-  _getHeight: function($el) {
-    var heights = [];
-
+  _getHeight: function() {
+    var heights = [],
+        $el = this.wrapper;
     for (var i = 0, len = $el.length; i < len; i++) {
-      heights.push($($el[i]).css('height', '').outerHeight());
+      heights.push( $($el[i]).css('min-height', '').outerHeight() );
     }
-
     return Math.max.apply(null, heights);
   },
 
-  _equalize: function($group, height) {
-    $group.innerHeight(height);
-    $(window).trigger('ab.equalizer.equalized', [$group, height]);
+  _equalize: function(height) {
+    this.wrapper.css('min-height', height);
+    $(window).trigger('ab.equalizer.equalized', [this.wrapper, height]);
   },
 
   destroy: function() {
-    $(window).off('resize.ab.equalizer scroll.ab.equalizer');
+    $(window).off('rab.equalizer.equalized');
+    this.wrapper.css('min-height', '');
   }
-
 };
 
 function equalizer(opt) {
-  var el = $('[data-ab-equalizer]');
+  var $trigger = $('[data-ab-equalizer]');
+  var $filtered = AB.fn.uniqueElByAttributeValue($trigger, 'data-ab-equalizer');
 
-  for (var i = 0, len = el.length; i < len; i++) {
-    $(el[i]).equalize = new Equalizer(el[i], opt);
+  for (var i = 0, len = $filtered.length; i < len; i++) {
+    var selectorValue = $($filtered[i]).attr('data-ab-equalizer'),
+        selector = '[data-ab-equalizer="'+ selectorValue +'"]';
+
+    selectorValue = new Equalizer(selector);
   }
 }
 
@@ -449,6 +390,24 @@ var fn = {
       return false;
     }
     return true;
+  },
+
+  // filter elements to keep only 1 elements with same attribute and value
+  uniqueElByAttributeValue: function($elArray, attribute) {
+    var obj = {},
+        category;
+
+    var filteredEl = $elArray.filter(function(){
+      category = $(this).attr(attribute);
+      if(obj[category]){
+        return false;
+      } else {
+        obj[category] = true;
+        return true;
+      }
+    });
+
+    return filteredEl;
   }
 
 };
@@ -488,8 +447,7 @@ function imagesLoaded(images, callback) {
     var image = images[i];
     if (image.complete) {
       singleImageLoaded();
-    } else if (typeof image.naturalWidth !== 'undefined' && image.naturalWidth >
-      0) {
+    } else if (typeof image.naturalWidth !== 'undefined' && image.naturalWidth >0) {
       singleImageLoaded();
     } else {
       $(image).one('load', singleImageLoaded);
@@ -551,10 +509,9 @@ MediaQuery.defaults = {
 };
 
 MediaQuery.prototype = {
-
   init: function() {
     var $meta = $('#AB-mediaQuery'),
-      resizeTimeout;
+        resizeTimeout;
 
     if (!$meta.length) {
       var meta = document.createElement('meta');
@@ -568,14 +525,12 @@ MediaQuery.prototype = {
       if (key === 'small') {
         this.queries.push({
           name: key,
-          value: 'only screen and (max-width: ' + namedQueries[key] +
-            ')'
+          value: 'only screen and (max-width: ' + namedQueries[key] + ')'
         });
       } else {
         this.queries.push({
           name: key,
-          value: 'only screen and (min-width: ' + namedQueries[key] +
-            ')'
+          value: 'only screen and (min-width: ' + namedQueries[key] + ')'
         });
       }
     }
@@ -585,11 +540,9 @@ MediaQuery.prototype = {
   },
 
   _getCurrentSize: function() {
-    var that = this,
-      matched;
+    var matched;
 
     this.queries.forEach(function(el, i, array) {
-
       if (window.matchMedia(el.value).matches) {
         matched = el;
       }
@@ -603,23 +556,13 @@ MediaQuery.prototype = {
   },
 
   getQueries: function() {
-    var extractedStyles = decodeURI($('#AB-mediaQuery').css('font-family').trim()
-        .slice(1, -1)), // browsers re-quote string style values
-      mq;
-
-    if (!AB.fn.isJson(extractedStyles)) {
-      mq = this.settings;
-    } else {
-      mq = JSON.parse(extractedStyles);
-    }
-
-    return mq;
+    var extractedStyles = decodeURI($('#AB-mediaQuery').css('font-family').trim().slice(1, -1)); // browsers re-quote string style values
+    return AB.fn.isJson(extractedStyles) ? JSON.parse(extractedStyles) : this.settings;
   },
 
   get: function(size) {
-    if (typeof size === 'undefined') {
-      return;
-    }
+    if (typeof size === 'undefined') { return; }
+
     var queries = this.queries;
 
     for (var i = 0, len = queries.length; i < len; i++) {
@@ -632,8 +575,8 @@ MediaQuery.prototype = {
 
   _watcher: function() {
     var that = this,
-      resizeTimeout,
-      newSize;
+        resizeTimeout,
+        newSize;
 
     $(window).on('resize.ab.mediaquery', function() {
       newSize = that._getCurrentSize();
@@ -654,7 +597,6 @@ MediaQuery.prototype = {
 
     return false;
   }
-
 };
 
 function mediaQuery(opt) {
@@ -664,6 +606,64 @@ function mediaQuery(opt) {
 module.exports = mediaQuery;
 
 },{}],9:[function(require,module,exports){
+"use strict";
+
+/*
+
+Origin: http://manos.malihu.gr/event-based-jquery-element-resize/
+
+USAGE
+
+var someVariable = AB.resizeEvent('selector', function(){
+  ... callback
+});
+
+*/
+
+function ResizeEvent(el, callback) {
+  if (!(this instanceof ResizeEvent)) {
+    return new ResizeEvent(el, callback);
+  }
+
+  this.el = el;
+  this.callback = callback;
+
+  if (this.el.length) {
+    this.init();
+  }
+}
+
+ResizeEvent.prototype = {
+  init: function() {
+    var that = this,
+        selector = this.el;
+
+    [].forEach.call(document.querySelectorAll(selector), function(el) {
+      el.mr = [el.offsetWidth,el.offsetHeight];
+      el.insertAdjacentHTML("beforeend", "<div class='AB-resizeEvent-frame' style='position:absolute;width:auto;height:auto;top:0;right:0;bottom:0;left:0;margin:0;padding:0;overflow:hidden;visibility:hidden;z-index:-1'><iframe style='width:100%;height:0;border:0;visibility:visible;margin:0'></iframe><iframe style='width:0;height:100%;border:0;visibility:visible;margin:0'></iframe></div>");
+
+      [].forEach.call(el.querySelectorAll(".AB-resizeEvent-frame iframe"), function(frame) {
+        (frame.contentWindow || frame).onresize = function(){
+          if (el.mr[0] !== el.offsetWidth || el.mr[1] !== el.offsetHeight) {
+            if (that.callback) {
+              that.callback.call(el);
+            }
+            el.mr[0] = el.offsetWidth;
+            el.mr[1] = el.offsetHeight;
+          }
+        };
+      });
+    });
+  }
+};
+
+function resizeEvent(el, callback) {
+  AB.mediaQuery = new ResizeEvent(el, callback);
+}
+
+module.exports = resizeEvent;
+
+},{}],10:[function(require,module,exports){
 "use strict";
 
 /*
@@ -724,11 +724,9 @@ ScrollTo.prototype = {
   getAnchor: function(el) {
     var location = window.location;
 
-    if (location.pathname.replace(/^\//, '') === el.pathname.replace(/^\//,
-        '') && location.hostname === el.hostname) {
+    if (location.pathname.replace(/^\//, '') === el.pathname.replace(/^\//, '') && location.hostname === el.hostname) {
       var $target = $(el.hash);
-      $target = $target.length ? $target : $('[name=' + el.hash.slice(1) +
-        ']');
+      $target = $target.length ? $target : $('[name=' + el.hash.slice(1) + ']');
 
       if ($target.length) {
         this.scroll($target);

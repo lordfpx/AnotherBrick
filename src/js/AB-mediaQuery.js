@@ -49,10 +49,9 @@ MediaQuery.defaults = {
 };
 
 MediaQuery.prototype = {
-
   init: function() {
     var $meta = $('#AB-mediaQuery'),
-      resizeTimeout;
+        resizeTimeout;
 
     if (!$meta.length) {
       var meta = document.createElement('meta');
@@ -66,14 +65,12 @@ MediaQuery.prototype = {
       if (key === 'small') {
         this.queries.push({
           name: key,
-          value: 'only screen and (max-width: ' + namedQueries[key] +
-            ')'
+          value: 'only screen and (max-width: ' + namedQueries[key] + ')'
         });
       } else {
         this.queries.push({
           name: key,
-          value: 'only screen and (min-width: ' + namedQueries[key] +
-            ')'
+          value: 'only screen and (min-width: ' + namedQueries[key] + ')'
         });
       }
     }
@@ -83,11 +80,9 @@ MediaQuery.prototype = {
   },
 
   _getCurrentSize: function() {
-    var that = this,
-      matched;
+    var matched;
 
     this.queries.forEach(function(el, i, array) {
-
       if (window.matchMedia(el.value).matches) {
         matched = el;
       }
@@ -101,23 +96,13 @@ MediaQuery.prototype = {
   },
 
   getQueries: function() {
-    var extractedStyles = decodeURI($('#AB-mediaQuery').css('font-family').trim()
-        .slice(1, -1)), // browsers re-quote string style values
-      mq;
-
-    if (!AB.fn.isJson(extractedStyles)) {
-      mq = this.settings;
-    } else {
-      mq = JSON.parse(extractedStyles);
-    }
-
-    return mq;
+    var extractedStyles = decodeURI($('#AB-mediaQuery').css('font-family').trim().slice(1, -1)); // browsers re-quote string style values
+    return AB.fn.isJson(extractedStyles) ? JSON.parse(extractedStyles) : this.settings;
   },
 
   get: function(size) {
-    if (typeof size === 'undefined') {
-      return;
-    }
+    if (typeof size === 'undefined') { return; }
+
     var queries = this.queries;
 
     for (var i = 0, len = queries.length; i < len; i++) {
@@ -130,8 +115,8 @@ MediaQuery.prototype = {
 
   _watcher: function() {
     var that = this,
-      resizeTimeout,
-      newSize;
+        resizeTimeout,
+        newSize;
 
     $(window).on('resize.ab.mediaquery', function() {
       newSize = that._getCurrentSize();
@@ -152,7 +137,6 @@ MediaQuery.prototype = {
 
     return false;
   }
-
 };
 
 function mediaQuery(opt) {

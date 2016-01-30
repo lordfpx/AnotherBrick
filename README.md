@@ -23,6 +23,8 @@ Check "example-usage.js" for usage in your scripts.
   It's a pack of utilities functions:
   * AB.fn.isJson(string)
     return true is a string can be parsed to JSON format to prevent famous Uncaught SyntaxError: Unexpected token ;-)
+  * AB.fn.uniqueElByAttributeValue(array of elements, attribute to check value)
+    return the same array but keeping only elements with unique attribute value
 
 
 * ## AB-mediaQuery
@@ -71,63 +73,22 @@ Check "example-usage.js" for usage in your scripts.
 
 
 * ## AB.equalizer
-    This plugin will allow you to equalize elements. Usage is quite simple. First, define a container with data-equalizer attribute, then give the same attribute to element you want to equalize: data-equalizer-watch="xxx". All elements with the same attribute and value will be equalized.
+    This plugin will allow you to equalize elements with data-ab-equalize. All elements with the same value will be equalized.
 
     ```
-    <div data-equalizer>
-      <div data-equalizer-watch="test1">
-        Lorem ipsum dolor sit amet,
-        consectetur adipisicing elit. Minima hic debitis ut consectetur.
-        Molestias quod dolore veniam, rem nostrum modi nulla a, et veritatis,
-        nobis quae error quidem illo ea.
-      </div>
+    <div data-ab-equalize="someID">
+      Lorem ipsum dolor sit amet,
+      consectetur adipisicing elit. Minima hic debitis ut consectetur.
+      Molestias quod dolore veniam, rem nostrum modi nulla a, et veritatis,
+      nobis quae error quidem illo ea.
+    </div>
 
-      <div data-equalizer-watch="test1">
-        Lorem
-      </div>
-
-      <div data-equalizer-watch="paragraph">
-        Lorem ipsum dolor sit amet.
-      </div>
-
-      <div data-equalizer-watch="paragraph">
-        Lorem nobis quae error quidem illo ea.Lorem nobis quae.
-      </div>
+    <div data-ab-equalize="someID">
+      Lorem
     </div>
     ```
 
-    You can also nest different data-equalizer-watch. Anyway, it's limited to 1 extra level:
-
-    ```
-    <div data-equalizer>
-      <div data-equalizer-watch="test1">
-        Lorem ipsum dolor sit amet,
-        consectetur adipisicing elit. Minima hic debitis ut consectetur.
-        Molestias quod dolore veniam, rem nostrum modi nulla a, et veritatis,
-        nobis quae error quidem illo ea.
-
-        <div data-equalizer-watch="nested">
-          Lorem ipsum dolor sit amet.
-        </div>
-
-        <div data-equalizer-watch="nested">
-          Lorem nobis quae error quidem illo ea.Lorem nobis quae.
-        </div>
-      </div>
-
-      <div data-equalizer-watch="test1">
-        Lorem
-      </div>
-
-      <div data-equalizer-watch="paragraph">
-        Lorem ipsum dolor sit amet.
-      </div>
-
-      <div data-equalizer-watch="paragraph">
-        Lorem nobis quae error quidem illo ea.Lorem nobis quae.
-      </div>
-    </div>
-    ```
+    You can nest, the height is always "watched" to keep elements always equalized.
 
 
 * ## AB.deviceDetect
@@ -172,5 +133,14 @@ Check "example-usage.js" for usage in your scripts.
       duration: 1000,
       offset: 0,
       easing: 'swing'
+    });
+    ```
+
+* ## AB.resizeEvent
+    watch element resizing and send callback (used in AB.equalizer).
+
+    ```
+    var someVariable = AB.resizeEvent('selector', function(){
+      ... callback
     });
     ```
