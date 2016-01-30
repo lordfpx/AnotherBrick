@@ -49,19 +49,19 @@ Equalizer.prototype = {
     var heights = [],
         $el = this.wrapper;
     for (var i = 0, len = $el.length; i < len; i++) {
-      heights.push( $($el[i]).css('min-height', '').outerHeight() );
+      heights.push( $($el[i]).css('height', '').outerHeight(true) );
     }
     return Math.max.apply(null, heights);
   },
 
   _equalize: function(height) {
-    this.wrapper.css('min-height', height);
+    this.wrapper.css('height', height);
     $(window).trigger('ab.equalizer.equalized', [this.wrapper, height]);
   },
 
   destroy: function() {
     $(window).off('rab.equalizer.equalized');
-    this.wrapper.css('min-height', '');
+    this.wrapper.css('height', '');
   }
 };
 

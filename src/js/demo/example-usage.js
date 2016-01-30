@@ -39,6 +39,6 @@ AB.scrollTo({
 });
 
 // resizeEvent USAGE
-var block1 = AB.resizeEvent('.data-ab-equalizer', function(){
+/*var block1 = AB.resizeEvent('.data-ab-equalizer', function(){
   console.log('AB.resizeEvent ==>', '.data-ab-equalizer was resized');
-});
+});*/
