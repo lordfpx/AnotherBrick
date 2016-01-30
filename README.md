@@ -17,6 +17,11 @@ Check "example-usage.js" for usage in your scripts.
       return the same array but keeping only elements with unique attribute value
 
 
+* ### AB-easing
+    (From https://github.com/danro/jquery-easing/blob/master/jquery.easing.js)
+    Lot of well known easing collection of functions.
+
+
 * ### AB-mediaQuery
     (Inspired a lot from http://foundation.zurb.com/)
     First, you need to prepare your SCSS. CSS and JS breakpoints will be shared:
