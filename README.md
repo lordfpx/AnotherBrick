@@ -1,16 +1,6 @@
 # AB - Another Brick
-
-AB is a package of plugins built on a flexible CommonJS/AMD Javascript pattern (http://www.smashingmagazine.com/2011/10/essential-jquery-plugin-patterns/ ; https://github.com/addyosmani/essential-js-design-patterns).
-
 I'll try to add convenient plugins. I'll extract some from frameworks, I'll write others.
 The idea behind this project is to give you bricks of Javascripts to solve usual design difficulties.
-
-Available plugins:
-* AB-deviceDetect: detect mobile Browser and OS (inspired by unknown sources)
-* AB-equalizer: Equalize elements height whatever the layout
-* AB-mediaQuery: Use media-queries on JS side (Inspired a lot from http://foundation.zurb.com/)
-* AB-imagesLoaded: callback when images loaded (from http://foundation.zurb.com/)
-* AB-scrollTo
 
 
 ## Basic usage
@@ -27,7 +17,7 @@ Check "example-usage.js" for usage in your scripts.
     return the same array but keeping only elements with unique attribute value
 
 
-* ## AB-mediaQuery
+* ## AB-mediaQuery (Inspired a lot from http://foundation.zurb.com/)
   First, you need to prepare your SCSS. CSS and JS breakpoints will be shared:
 
   ### SCSS preparation and usage
@@ -91,7 +81,7 @@ Check "example-usage.js" for usage in your scripts.
     You can nest, the height is always "watched" to keep elements always equalized.
 
 
-* ## AB.deviceDetect
+* ## AB.deviceDetect (inspired by unknown sources)
     That allow you to test mobile browser and OS:
     ```
     AB.deviceDetect.get('browser', 'Android');
@@ -114,7 +104,7 @@ Check "example-usage.js" for usage in your scripts.
     ```
 
 
-* ## AB.imagesLoaded
+* ## AB.imagesLoaded (from http://foundation.zurb.com/)
     Run callback when images are loaded.
     Can be useful after ajax response: call it onSuccess with correct selector of course
     ```
