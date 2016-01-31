@@ -37,8 +37,3 @@ AB.equalizer();
 AB.scrollTo({
   duration: 1000
 });
-
-// resizeEvent USAGE
-/*var block1 = AB.resizeEvent('.data-ab-equalizer', function(){
-  console.log('AB.resizeEvent ==>', '.data-ab-equalizer was resized');
-});*/

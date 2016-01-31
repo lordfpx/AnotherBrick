@@ -48,9 +48,12 @@ Equalizer.prototype = {
   _getHeight: function() {
     var heights = [],
         $el = this.wrapper;
+
     for (var i = 0, len = $el.length; i < len; i++) {
-      heights.push( $($el[i]).css('height', '').outerHeight(true) );
+      $($el[i]).css('height', '');
+      heights.push( $($el[i]).outerHeight(true) );
     }
+
     return Math.max.apply(null, heights);
   },
 
