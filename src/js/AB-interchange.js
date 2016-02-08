@@ -7,18 +7,18 @@ Heavily inspired by https://github.com/zurb/foundation-sites
 */
 
 
-var Interchange = function(opt) {
+var Interchange = function(element, opt) {
   if (!(this instanceof Interchange)) {
     return new Interchange(opt);
   }
 
   this.settings = $.extend({}, Interchange.defaults, opt);
 
-  this.$element = $('[data-ab-interchange]');
+  this.$element = $(element);
   this.rules = [];
 
-  this.init();
-  this.events();
+  this.init()
+      .events();
 };
 
 Interchange.defaults = {
@@ -27,15 +27,15 @@ Interchange.defaults = {
 
 Interchange.prototype = {
   init: function() {
-    this._generateRules();
-    this._reflow();
+    this._generateRules()
+        ._reflow();
 
     return this;
   },
 
   _generateRules: function() {
-    var rulesList = [];
-    var rules;
+    var rulesList = [],
+        rules;
 
     if (this.settings.rules) {
       rules = this.settings.rules;
@@ -81,30 +81,35 @@ Interchange.prototype = {
   replace: function(path) {
     if (this.currentPath === path) return;
 
-    var _this = this,
+    var that = this,
         trigger = 'replaced.ab.interchange';
 
     // Replacing images
     if (this.$element[0].nodeName === 'IMG') {
       this.$element.attr('src', path).load(function() {
-        _this.currentPath = path;
-      })
-      .trigger(trigger);
+        that.currentPath = path;
+      }).trigger(trigger);
     }
     // Replacing background images
     else if (path.match(/\.(gif|jpg|jpeg|tiff|png)([?#].*)?/i)) {
-      this.$element.css({ 'background-image': 'url('+path+')' })
-          .trigger(trigger);
+      this.$element.css({ 'background-image': 'url('+path+')' }).trigger(trigger);
     }
     // Replacing HTML
     else {
       $.get(path, function(response) {
-        _this.$element.html(response)
-             .trigger(trigger);
-        _this.currentPath = path;
+        that.$element.html(response).trigger(trigger);
+        that.currentPath = path;
       });
     }
   }
 };
 
-module.exports = Interchange;
+function interchange(opt){
+  var elements = document.querySelectorAll('[data-ab-interchange]');
+
+  for (var i = 0, len = elements.length; i < len; i++) {
+    var init = new Interchange(elements[i], opt);
+  }
+}
+
+module.exports = interchange;
