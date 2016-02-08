@@ -57,6 +57,18 @@ window.AB = {
     console.log(this.name + ": " + this.description + " v" + this.version + " by " + this.author.name + " (" + this.author.email + ")");
   },
 
+  init: function(plugins){
+    // must init plugins
+    AB.mediaQuery();
+
+    // user init plugins
+    for (var plugin in plugins) {
+      if (plugins.hasOwnProperty(plugin)) {
+        AB[plugin]();
+      }
+    }
+  },
+
   fn:             require('../js/AB-fn'),
   easing:         require('../js/AB-easing'),
   imagesLoaded:   require('../js/AB-imagesLoaded'),
@@ -64,10 +76,11 @@ window.AB = {
   equalizer:      require('../js/AB-equalizer'),
   deviceDetect:   require('../js/AB-deviceDetect'),
   mediaQuery:     require('../js/AB-mediaQuery'),
-  scrollTo:       require('../js/AB-scrollTo')
+  scrollTo:       require('../js/AB-scrollTo'),
+  interchange:    require('../js/AB-interchange')
 };
 
-},{"../../package.json":1,"../js/AB-deviceDetect":3,"../js/AB-easing":4,"../js/AB-equalizer":5,"../js/AB-fn":6,"../js/AB-imagesLoaded":7,"../js/AB-mediaQuery":8,"../js/AB-resizeEvent":9,"../js/AB-scrollTo":10}],3:[function(require,module,exports){
+},{"../../package.json":1,"../js/AB-deviceDetect":3,"../js/AB-easing":4,"../js/AB-equalizer":5,"../js/AB-fn":6,"../js/AB-imagesLoaded":7,"../js/AB-interchange":8,"../js/AB-mediaQuery":9,"../js/AB-resizeEvent":10,"../js/AB-scrollTo":11}],3:[function(require,module,exports){
 "use strict";
 
 /*
@@ -303,49 +316,76 @@ USAGE
 
 */
 
-function Equalizer(selector) {
-  if (!(this instanceof Equalizer)) {
-    return new Equalizer(selector);
-  }
+// filter elements to keep only 1 elements with same attribute and value
+function uniqueElByAttributeValue($elArray, attribute) {
+  var obj = {},
+      category;
 
-  this.selector = selector;
-  this.wrapper = $(selector);
+  var filteredEl = $elArray.filter(function(){
+    category = $(this).attr(attribute);
+    if(obj[category]){
+      return false;
+    } else {
+      obj[category] = true;
+      return true;
+    }
+  });
 
-  if (this.wrapper.length) {
-    this.init();
-  }
+  return filteredEl;
 }
+
+
+function Equalizer(opt) {
+  if (!(this instanceof Equalizer)) {
+    return new Equalizer(opt);
+  }
+
+  this.settings = $.extend({}, Equalizer.defaults, opt);
+
+  this.el = $('[data-ab-equalizer]');
+  this.filtered = uniqueElByAttributeValue(this.el, 'data-ab-equalizer');
+  this.resizeEvent = {};
+
+  this.init();
+}
+
+Equalizer.defaults = {};
 
 Equalizer.prototype = {
   init: function() {
     var that = this,
-        $img = this.wrapper.find('img');
+        $filtered = this.filtered;
 
-    if ($img.length) {
-      AB.imagesLoaded($img, function() {
-        that._equalize(that._getHeight());
-        that._watch();
-      });
-      return;
+    for (var i = 0, len = $filtered.length; i < len; i++) {
+      var selectorValue = $( $filtered[i] ).attr('data-ab-equalizer'),
+          selector = '[data-ab-equalizer="'+ selectorValue +'"]';
+
+      this.startEqualize(selector);
     }
 
-    this._equalize(this._getHeight());
-    this._watch();
+    return this;
   },
 
-  _watch: function() {
+  startEqualize: function(selector){
     var that = this,
-        selector = this.selector,
-        randomString = Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 5);
+        $wrapper = $(selector);
 
-    randomString = AB.resizeEvent(selector, function(){
-      that._equalize(that._getHeight());
+    AB.imagesLoaded($wrapper, function() {
+      that._equalize($wrapper)
+          ._watch(selector, $wrapper);
     });
   },
 
-  _getHeight: function() {
-    var heights = [],
-        $el = this.wrapper;
+  _watch: function(selector, $el) {
+    var that = this;
+
+    AB.resizeEvent(selector, function(){
+      that._equalize($el);
+    });
+  },
+
+  _getMaxHeight: function($el) {
+    var heights = [];
 
     for (var i = 0, len = $el.length; i < len; i++) {
       $($el[i]).css('height', '');
@@ -355,30 +395,18 @@ Equalizer.prototype = {
     return Math.max.apply(null, heights);
   },
 
-  _equalize: function(height) {
-    this.wrapper.css('height', height);
-    $(window).trigger('ab.equalizer.equalized', [this.wrapper, height]);
-  },
+  _equalize: function($el) {
+    var height = this._getMaxHeight($el);
 
-  destroy: function() {
-    $(window).off('rab.equalizer.equalized');
-    this.wrapper.css('height', '');
+    $el.css('height', height);
+    $(window).trigger('ab.equalizer.equalized', [$el]);
+
+    return this;
   }
 };
 
-function equalizer(opt) {
-  var $trigger = $('[data-ab-equalizer]');
-  var $filtered = AB.fn.uniqueElByAttributeValue($trigger, 'data-ab-equalizer');
 
-  for (var i = 0, len = $filtered.length; i < len; i++) {
-    var selectorValue = $($filtered[i]).attr('data-ab-equalizer'),
-        selector = '[data-ab-equalizer="'+ selectorValue +'"]';
-
-    selectorValue = new Equalizer(selector);
-  }
-}
-
-module.exports = equalizer;
+module.exports = Equalizer;
 
 },{}],6:[function(require,module,exports){
 "use strict";
@@ -393,24 +421,6 @@ var fn = {
       return false;
     }
     return true;
-  },
-
-  // filter elements to keep only 1 elements with same attribute and value
-  uniqueElByAttributeValue: function($elArray, attribute) {
-    var obj = {},
-        category;
-
-    var filteredEl = $elArray.filter(function(){
-      category = $(this).attr(attribute);
-      if(obj[category]){
-        return false;
-      } else {
-        obj[category] = true;
-        return true;
-      }
-    });
-
-    return filteredEl;
   }
 
 };
@@ -425,15 +435,16 @@ From https://github.com/zurb/foundation-sites
 
 USAGE:
 
-var imagesLoadedCallback = function() {
+var callback = function() {
   console.log('imagesLoadedCallback: Images loaded');
 };
-AB.imagesLoaded( $('img'), imagesLoadedCallback );
+AB.imagesLoaded( $('img'), callback );
 
 */
 
-function imagesLoaded(images, callback) {
-  var unloaded = images.length;
+function imagesLoaded($wrapper, callback) {
+  var $images = $wrapper.find('img'),
+      unloaded = $images.length;
 
   if (unloaded === 0) {
     callback();
@@ -447,7 +458,8 @@ function imagesLoaded(images, callback) {
   };
 
   for (var i = 0, len = unloaded; i < len; i++) {
-    var image = images[i];
+    var image = $images[i];
+
     if (image.complete) {
       singleImageLoaded();
     } else if (typeof image.naturalWidth !== 'undefined' && image.naturalWidth >0) {
@@ -461,6 +473,118 @@ function imagesLoaded(images, callback) {
 module.exports = imagesLoaded;
 
 },{}],8:[function(require,module,exports){
+"use strict";
+
+/*
+Heavily inspired by https://github.com/zurb/foundation-sites
+
+
+*/
+
+
+var Interchange = function(opt) {
+  if (!(this instanceof Interchange)) {
+    return new Interchange(opt);
+  }
+
+  this.settings = $.extend({}, Interchange.defaults, opt);
+
+  this.$element = $('[data-ab-interchange]');
+  this.rules = [];
+
+  this.init();
+  this.events();
+};
+
+Interchange.defaults = {
+  rules: null
+};
+
+Interchange.prototype = {
+  init: function() {
+    this._generateRules();
+    this._reflow();
+
+    return this;
+  },
+
+  _generateRules: function() {
+    var rulesList = [];
+    var rules;
+
+    if (this.settings.rules) {
+      rules = this.settings.rules;
+    }
+    else {
+      rules = this.$element.data('ab-interchange').match(/\[.*?\]/g);
+    }
+
+    for (var i=0, len=rules.length; i<len; i++) {
+      var rule = rules[i].slice(1, -1).split(', '),
+          path = rule.slice(0, -1).join(''),
+          query = rule[rule.length - 1];
+
+      rulesList.push({
+        path: path,
+        query: query
+      });
+    }
+
+    this.rules = rulesList;
+
+    return this;
+  },
+
+  _reflow: function() {
+    var match,
+        currentQuery = AB.mediaQuery.current;
+
+    // Iterate through each rule
+    for (var i=0, len=this.rules.length; i<len; i++) {
+      var rule = this.rules[i];
+
+      if (rule.query === currentQuery) {
+        this.replace(rule.path);
+      }
+    }
+  },
+
+  events: function() {
+    $(window).on('resize.ab.interchange', this._reflow.bind(this));
+  },
+
+  replace: function(path) {
+    if (this.currentPath === path) return;
+
+    var _this = this,
+        trigger = 'replaced.ab.interchange';
+
+    // Replacing images
+    if (this.$element[0].nodeName === 'IMG') {
+      this.$element.attr('src', path).load(function() {
+        _this.currentPath = path;
+      })
+      .trigger(trigger);
+    }
+    // Replacing background images
+    else if (path.match(/\.(gif|jpg|jpeg|tiff|png)([?#].*)?/i)) {
+      this.$element.css({ 'background-image': 'url('+path+')' })
+          .trigger(trigger);
+    }
+    // Replacing HTML
+    else {
+      $.get(path, function(response) {
+        _this.$element.html(response)
+             .trigger(trigger);
+        _this.currentPath = path;
+      });
+    }
+  }
+};
+
+module.exports = Interchange;
+
+},{}],9:[function(require,module,exports){
 "use strict";
 
 /*
@@ -540,6 +664,8 @@ MediaQuery.prototype = {
 
     this.current = this._getCurrentSize();
     this._watcher();
+
+    return this;
   },
 
   _getCurrentSize: function() {
@@ -608,7 +734,7 @@ function mediaQuery(opt) {
 
 module.exports = mediaQuery;
 
-},{}],9:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 "use strict";
 
 /*
@@ -617,45 +743,36 @@ Origin: http://manos.malihu.gr/event-based-jquery-element-resize/
 
 USAGE
 
-var someVariable = AB.resizeEvent('selector', function(){
+AB.resizeEvent('selector', function(){
   ... callback
 });
 
 */
 
-function ResizeEvent(el, callback) {
-  if (!(this instanceof ResizeEvent)) {
-    return new ResizeEvent(el, callback);
-  }
+function resizeEvent(selector, callback) {
+  var timeout = false,
+      delay = 100; // delay the callback
 
-  this.el = el;
-  this.callback = callback;
-
-  if (this.el.length) {
-    this.init();
-  }
-}
-
-ResizeEvent.prototype = {
-  init: function() {
-    var that = this,
-        selector = this.el,
-        timeout = false,
-        delay = 200; // delay the callback
-
+  if (typeof selector !== 'undefined') {
     [].forEach.call(document.querySelectorAll(selector), function(el) {
       el.mr = [el.offsetWidth, el.offsetHeight];
-      el.insertAdjacentHTML("beforeend", "<div class='AB-resizeEvent-frame' style='position:absolute;width:auto;height:auto;top:0;right:0;bottom:0;left:0;margin:0;padding:0;overflow:hidden;visibility:hidden;z-index:-1'><iframe style='width:100%;height:0;border:0;visibility:visible;margin:0'></iframe><iframe style='width:0;height:100%;border:0;visibility:visible;margin:0'></iframe></div>");
+      el.insertAdjacentHTML(
+        "beforeend",
+        "<div class='AB-resizeEvent-frame' style='position:absolute;width:auto;height:auto;top:0;right:0;bottom:0;left:0;margin:0;padding:0;overflow:hidden;visibility:hidden;z-index:-1'><iframe style='width:100%;height:0;border:0;visibility:visible;margin:0'></iframe><iframe style='width:0;height:100%;border:0;visibility:visible;margin:0'></iframe></div>"
+      );
+
       if (el.style.position === "static" || el.style.position === "") {
         el.style.position = "relative";
       }
+
       [].forEach.call(el.querySelectorAll(".AB-resizeEvent-frame iframe"), function(frame) {
         (frame.contentWindow || frame).onresize = function() {
           clearTimeout(timeout);
+
           timeout = setTimeout(function(){
             if (el.mr[0] !== el.offsetWidth || el.mr[1] !== el.offsetHeight) {
-              if (that.callback) {
-                that.callback.call(el);
+              if (callback) {
+                callback.call(el);
               }
               el.mr[0] = el.offsetWidth;
               el.mr[1] = el.offsetHeight;
@@ -665,15 +782,12 @@ ResizeEvent.prototype = {
       });
     });
   }
-};
 
-function resizeEvent(el, callback) {
-  AB.mediaQuery = new ResizeEvent(el, callback);
 }
 
 module.exports = resizeEvent;
 
-},{}],10:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 "use strict";
 
 /*
@@ -811,8 +925,6 @@ ScrollTo.prototype = {
   }
 };
 
-module.exports = function(opt) {
-  return new ScrollTo(opt);
-};
+module.exports = ScrollTo;
 
 },{}]},{},[2]);

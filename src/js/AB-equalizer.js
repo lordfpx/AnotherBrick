@@ -5,49 +5,76 @@ USAGE
 
 */
 
-function Equalizer(selector) {
-  if (!(this instanceof Equalizer)) {
-    return new Equalizer(selector);
-  }
+// filter elements to keep only 1 elements with same attribute and value
+function uniqueElByAttributeValue($elArray, attribute) {
+  var obj = {},
+      category;
 
-  this.selector = selector;
-  this.wrapper = $(selector);
+  var filteredEl = $elArray.filter(function(){
+    category = $(this).attr(attribute);
+    if(obj[category]){
+      return false;
+    } else {
+      obj[category] = true;
+      return true;
+    }
+  });
 
-  if (this.wrapper.length) {
-    this.init();
-  }
+  return filteredEl;
 }
+
+
+function Equalizer(opt) {
+  if (!(this instanceof Equalizer)) {
+    return new Equalizer(opt);
+  }
+
+  this.settings = $.extend({}, Equalizer.defaults, opt);
+
+  this.el = $('[data-ab-equalizer]');
+  this.filtered = uniqueElByAttributeValue(this.el, 'data-ab-equalizer');
+  this.resizeEvent = {};
+
+  this.init();
+}
+
+Equalizer.defaults = {};
 
 Equalizer.prototype = {
   init: function() {
     var that = this,
-        $img = this.wrapper.find('img');
+        $filtered = this.filtered;
 
-    if ($img.length) {
-      AB.imagesLoaded($img, function() {
-        that._equalize(that._getHeight());
-        that._watch();
-      });
-      return;
+    for (var i = 0, len = $filtered.length; i < len; i++) {
+      var selectorValue = $( $filtered[i] ).attr('data-ab-equalizer'),
+          selector = '[data-ab-equalizer="'+ selectorValue +'"]';
+
+      this.startEqualize(selector);
     }
 
-    this._equalize(this._getHeight());
-    this._watch();
+    return this;
   },
 
-  _watch: function() {
+  startEqualize: function(selector){
     var that = this,
-        selector = this.selector,
-        randomString = Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 5);
+        $wrapper = $(selector);
 
-    randomString = AB.resizeEvent(selector, function(){
-      that._equalize(that._getHeight());
+    AB.imagesLoaded($wrapper, function() {
+      that._equalize($wrapper)
+          ._watch(selector, $wrapper);
     });
   },
 
-  _getHeight: function() {
-    var heights = [],
-        $el = this.wrapper;
+  _watch: function(selector, $el) {
+    var that = this;
+
+    AB.resizeEvent(selector, function(){
+      that._equalize($el);
+    });
+  },
+
+  _getMaxHeight: function($el) {
+    var heights = [];
 
     for (var i = 0, len = $el.length; i < len; i++) {
       $($el[i]).css('height', '');
@@ -57,27 +84,15 @@ Equalizer.prototype = {
     return Math.max.apply(null, heights);
   },
 
-  _equalize: function(height) {
-    this.wrapper.css('height', height);
-    $(window).trigger('ab.equalizer.equalized', [this.wrapper, height]);
-  },
+  _equalize: function($el) {
+    var height = this._getMaxHeight($el);
 
-  destroy: function() {
-    $(window).off('rab.equalizer.equalized');
-    this.wrapper.css('height', '');
+    $el.css('height', height);
+    $(window).trigger('ab.equalizer.equalized', [$el]);
+
+    return this;
   }
 };
 
-function equalizer(opt) {
-  var $trigger = $('[data-ab-equalizer]');
-  var $filtered = AB.fn.uniqueElByAttributeValue($trigger, 'data-ab-equalizer');
 
-  for (var i = 0, len = $filtered.length; i < len; i++) {
-    var selectorValue = $($filtered[i]).attr('data-ab-equalizer'),
-        selector = '[data-ab-equalizer="'+ selectorValue +'"]';
-
-    selectorValue = new Equalizer(selector);
-  }
-}
-
-module.exports = equalizer;
+module.exports = Equalizer;

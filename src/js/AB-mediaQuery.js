@@ -77,6 +77,8 @@ MediaQuery.prototype = {
 
     this.current = this._getCurrentSize();
     this._watcher();
+
+    return this;
   },
 
   _getCurrentSize: function() {

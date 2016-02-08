@@ -14,13 +14,24 @@ html(lang='en')
           li
             a(href="#scrollTo") scrollTo
           li
+            a(href="#interchange") Interchange
+          li
             a(href="#equalizer") Equalizer
     
     h2#scrollTo scrollTo
     p Scroll with <strong data-ab-scrollto=".scrollTo">data-ab-scrollto=".scrollTo"</strong> or with anchor links href="#scrollTo".
     
-    h2#equalizer Equalizer
+    h2#interchange Interchange
+    h3 ...with img elements
+    img(src="", data-ab-interchange="[img/cat-1x.jpg, small], [img/cat-2x.jpg, medium], [img/cat-3x.jpg, large]")
+
+    h3 ...with CSS background-image 
+    div(
+      style="height: 200px"
+      data-ab-interchange="[img/cat-1x.jpg, small], [img/cat-2x.jpg, medium], [img/cat-3x.jpg, large]"
+    )
     
+    h2#equalizer Equalizer
     .row.data-ab-equalizer
       .col.data-ab-equalizer-watch
         h3(data-ab-equalizer="blockHeading") data-ab-equalizer="blockHeading"

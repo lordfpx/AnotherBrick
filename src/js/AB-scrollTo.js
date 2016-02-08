@@ -135,6 +135,4 @@ ScrollTo.prototype = {
   }
 };
 
-module.exports = function(opt) {
-  return new ScrollTo(opt);
-};
+module.exports = ScrollTo;

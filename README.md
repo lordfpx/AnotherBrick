@@ -139,7 +139,7 @@ Check "example-usage.js" for usage in your scripts.
     watch element resizing and send callback (used in AB.equalizer).
 
     ```
-    var someVariable = AB.resizeEvent('selector', function(){
+    AB.resizeEvent('selector', function(){
       ... callback
     });
     ```
