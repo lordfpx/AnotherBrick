@@ -45,7 +45,6 @@ function resizeEvent(selector, callback) {
       });
     });
   }
-
 }
 
 module.exports = resizeEvent;

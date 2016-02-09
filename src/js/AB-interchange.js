@@ -9,7 +9,7 @@ Heavily inspired by https://github.com/zurb/foundation-sites
 
 var Interchange = function(element, opt) {
   if (!(this instanceof Interchange)) {
-    return new Interchange(opt);
+    return new Interchange(element, opt);
   }
 
   this.settings = $.extend({}, Interchange.defaults, opt);

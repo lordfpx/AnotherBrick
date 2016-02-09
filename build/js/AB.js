@@ -335,15 +335,14 @@ function uniqueElByAttributeValue($elArray, attribute) {
 }
 
 
-function Equalizer(opt) {
+function Equalizer(element, opt) {
   if (!(this instanceof Equalizer)) {
-    return new Equalizer(opt);
+    return new Equalizer(element, opt);
   }
 
   this.settings = $.extend({}, Equalizer.defaults, opt);
 
-  this.el = $('[data-ab-equalizer]');
-  this.filtered = uniqueElByAttributeValue(this.el, 'data-ab-equalizer');
+  this.$el = $(element);
   this.resizeEvent = {};
 
   this.init();
@@ -354,10 +353,10 @@ Equalizer.defaults = {};
 Equalizer.prototype = {
   init: function() {
     var that = this,
-        $filtered = this.filtered;
+        $el = this.$el;
 
-    for (var i = 0, len = $filtered.length; i < len; i++) {
-      var selectorValue = $( $filtered[i] ).attr('data-ab-equalizer'),
+    for (var i = 0, len = $el.length; i < len; i++) {
+      var selectorValue = $( $el[i] ).attr('data-ab-equalizer'),
           selector = '[data-ab-equalizer="'+ selectorValue +'"]';
 
       this.startEqualize(selector);
@@ -405,8 +404,15 @@ Equalizer.prototype = {
   }
 };
 
+function equalizer(opt){
+  var elements = uniqueElByAttributeValue($('[data-ab-equalizer]'), 'data-ab-equalizer');
 
-module.exports = Equalizer;
+  for (var i = 0, len = elements.length; i < len; i++) {
+    var init = new Equalizer(elements[i], opt);
+  }
+}
+
+module.exports = equalizer;
 
 },{}],6:[function(require,module,exports){
 "use strict";
@@ -484,7 +490,7 @@ Heavily inspired by https://github.com/zurb/foundation-sites
 
 var Interchange = function(element, opt) {
   if (!(this instanceof Interchange)) {
-    return new Interchange(opt);
+    return new Interchange(element, opt);
   }
 
   this.settings = $.extend({}, Interchange.defaults, opt);
@@ -824,7 +830,6 @@ function resizeEvent(selector, callback) {
       });
     });
   }
-
 }
 
 module.exports = resizeEvent;
