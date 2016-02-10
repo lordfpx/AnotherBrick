@@ -153,11 +153,11 @@ MediaQuery.prototype = {
         resizeTimeout,
         newSize;
 
-    $(window).on('resize.ab.mediaquery', function() {
+    $(window).on('resize.ab-mediaquery', function() {
       newSize = that._getCurrentSize();
 
       if (newSize !== that.current) {
-        $(window).trigger('changed.ab.mediaquery', [newSize, that.current]);
+        $(window).trigger('changed.ab-mediaquery', [newSize, that.current]);
         that.current = newSize;
       }
     });

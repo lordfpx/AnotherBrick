@@ -81,14 +81,14 @@ Interchange.prototype = {
   },
 
   _events: function() {
-    $(window).on('resize.ab.interchange', this._reflow.bind(this));
+    $(window).on('resize.ab-interchange', this._reflow.bind(this));
   },
 
   _replace: function(path) {
     if (this.currentPath === path) return;
 
     var that = this,
-        trigger = 'replaced.ab.interchange';
+        trigger = 'replaced.ab-interchange';
 
     // Replacing images
     if (this.$element[0].nodeName === 'IMG') {

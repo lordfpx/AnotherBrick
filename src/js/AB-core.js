@@ -19,7 +19,7 @@ window.AB = {
     // user init plugins
     for (var plugin in plugins) {
       if (plugins.hasOwnProperty(plugin)) {
-        AB[plugin]();
+        AB[plugin](plugins[plugin]);
       }
     }
   },

@@ -87,7 +87,7 @@ Equalizer.prototype = {
     var height = this._getMaxHeight($el);
 
     $el.css('height', height);
-    $(window).trigger('ab.equalizer.equalized', [$el]);
+    $(window).trigger('equalized.ab-equalizer', [$el]);
 
     return this;
   }

@@ -64,7 +64,7 @@ window.AB = {
     // user init plugins
     for (var plugin in plugins) {
       if (plugins.hasOwnProperty(plugin)) {
-        AB[plugin]();
+        AB[plugin](plugins[plugin]);
       }
     }
   },
@@ -398,7 +398,7 @@ Equalizer.prototype = {
     var height = this._getMaxHeight($el);
 
     $el.css('height', height);
-    $(window).trigger('ab.equalizer.equalized', [$el]);
+    $(window).trigger('equalized.ab-equalizer', [$el]);
 
     return this;
   }
@@ -562,14 +562,14 @@ Interchange.prototype = {
   },
 
   _events: function() {
-    $(window).on('resize.ab.interchange', this._reflow.bind(this));
+    $(window).on('resize.ab-interchange', this._reflow.bind(this));
   },
 
   _replace: function(path) {
     if (this.currentPath === path) return;
 
     var that = this,
-        trigger = 'replaced.ab.interchange';
+        trigger = 'replaced.ab-interchange';
 
     // Replacing images
     if (this.$element[0].nodeName === 'IMG') {
@@ -757,11 +757,11 @@ MediaQuery.prototype = {
         resizeTimeout,
         newSize;
 
-    $(window).on('resize.ab.mediaquery', function() {
+    $(window).on('resize.ab-mediaquery', function() {
       newSize = that._getCurrentSize();
 
       if (newSize !== that.current) {
-        $(window).trigger('changed.ab.mediaquery', [newSize, that.current]);
+        $(window).trigger('changed.ab-mediaquery', [newSize, that.current]);
         that.current = newSize;
       }
     });
@@ -872,8 +872,8 @@ ScrollTo.prototype = {
     var that = this;
 
     $(document)
-      .off('click.ab.scrollTo')
-      .on('click.ab.scrollTo', this.trigger, function(e) {
+      .off('click.ab-scrollTo')
+      .on('click.ab-scrollTo', this.trigger, function(e) {
         e.preventDefault();
         var $this = $(this);
 
@@ -964,7 +964,7 @@ ScrollTo.prototype = {
       if (currentTime < that.settings.duration) {
         requestAnimFrame(animateScroll);
       } else {
-        $(document).trigger('ab.scrollTo.end', [$target]);
+        $(document).trigger('scrolled.ab-scrollTo', [$target]);
       }
     };
 
