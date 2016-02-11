@@ -35,7 +35,6 @@ console.log("AB.deviceDetect.isTouch() ==>", AB.deviceDetect.isTouch()); // retu
   - imagesLoaded
   - fn
   - easing
-  - resizeEvent
   - deviceDetect
 
   others are optional:

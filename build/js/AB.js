@@ -72,7 +72,6 @@ window.AB = {
   fn:             require('../js/AB-fn'),
   easing:         require('../js/AB-easing'),
   imagesLoaded:   require('../js/AB-imagesLoaded'),
-  resizeEvent:    require('../js/AB-resizeEvent'),
   equalizer:      require('../js/AB-equalizer'),
   deviceDetect:   require('../js/AB-deviceDetect'),
   mediaQuery:     require('../js/AB-mediaQuery'),
@@ -80,7 +79,7 @@ window.AB = {
   interchange:    require('../js/AB-interchange')
 };
 
-},{"../../package.json":1,"../js/AB-deviceDetect":3,"../js/AB-easing":4,"../js/AB-equalizer":5,"../js/AB-fn":6,"../js/AB-imagesLoaded":7,"../js/AB-interchange":8,"../js/AB-mediaQuery":9,"../js/AB-resizeEvent":10,"../js/AB-scrollTo":11}],3:[function(require,module,exports){
+},{"../../package.json":1,"../js/AB-deviceDetect":3,"../js/AB-easing":4,"../js/AB-equalizer":5,"../js/AB-fn":6,"../js/AB-imagesLoaded":7,"../js/AB-interchange":8,"../js/AB-mediaQuery":9,"../js/AB-scrollTo":10}],3:[function(require,module,exports){
 "use strict";
 
 /*
@@ -376,11 +375,24 @@ Equalizer.prototype = {
   },
 
   _watch: function(selector, $el) {
-    var that = this;
+    var that = this,
+        config = {
+          attributes: true,
+          childList: true,
+          subtree: true
+        },
+        $selector = $(selector);
 
-    AB.resizeEvent(selector, function(){
-      that._equalize($el);
+    // MutationObserver
+    this.equalizerObserver = new MutationObserver(function(mutations) {
+      mutations.forEach(function(mutation) {
+        that.startEqualize(selector);
+      });
     });
+
+    for (var i = 0, len = $selector.length; i < len; i++) {
+      this.equalizerObserver.observe($selector[i], config);
+    }
   },
 
   _getMaxHeight: function($el) {
@@ -783,58 +795,6 @@ function mediaQuery(opt) {
 module.exports = mediaQuery;
 
 },{}],10:[function(require,module,exports){
-"use strict";
-
-/*
-
-Origin: http://manos.malihu.gr/event-based-jquery-element-resize/
-
-USAGE
-
-AB.resizeEvent('selector', function(){
-  ... callback
-});
-
-*/
-
-function resizeEvent(selector, callback) {
-  var timeout = false,
-      delay = 100; // delay the callback
-
-  if (typeof selector !== 'undefined') {
-    [].forEach.call(document.querySelectorAll(selector), function(el) {
-      el.mr = [el.offsetWidth, el.offsetHeight];
-      el.insertAdjacentHTML(
-        "beforeend",
-        "<div class='AB-resizeEvent-frame' style='position:absolute;width:auto;height:auto;top:0;right:0;bottom:0;left:0;margin:0;padding:0;overflow:hidden;visibility:hidden;z-index:-1'><iframe style='width:100%;height:0;border:0;visibility:visible;margin:0'></iframe><iframe style='width:0;height:100%;border:0;visibility:visible;margin:0'></iframe></div>"
-      );
-
-      if (el.style.position === "static" || el.style.position === "") {
-        el.style.position = "relative";
-      }
-
-      [].forEach.call(el.querySelectorAll(".AB-resizeEvent-frame iframe"), function(frame) {
-        (frame.contentWindow || frame).onresize = function() {
-          clearTimeout(timeout);
-
-          timeout = setTimeout(function(){
-            if (el.mr[0] !== el.offsetWidth || el.mr[1] !== el.offsetHeight) {
-              if (callback) {
-                callback.call(el);
-              }
-              el.mr[0] = el.offsetWidth;
-              el.mr[1] = el.offsetHeight;
-            }
-          }, delay);
-        };
-      });
-    });
-  }
-}
-
-module.exports = resizeEvent;
-
-},{}],11:[function(require,module,exports){
 "use strict";
 
 /*

@@ -27,7 +27,6 @@ window.AB = {
   fn:             require('../js/AB-fn'),
   easing:         require('../js/AB-easing'),
   imagesLoaded:   require('../js/AB-imagesLoaded'),
-  resizeEvent:    require('../js/AB-resizeEvent'),
   equalizer:      require('../js/AB-equalizer'),
   deviceDetect:   require('../js/AB-deviceDetect'),
   mediaQuery:     require('../js/AB-mediaQuery'),

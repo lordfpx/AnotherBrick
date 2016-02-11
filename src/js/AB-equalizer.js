@@ -65,11 +65,24 @@ Equalizer.prototype = {
   },
 
   _watch: function(selector, $el) {
-    var that = this;
+    var that = this,
+        config = {
+          attributes: true,
+          childList: true,
+          subtree: true
+        },
+        $selector = $(selector);
 
-    AB.resizeEvent(selector, function(){
-      that._equalize($el);
+    // MutationObserver
+    this.equalizerObserver = new MutationObserver(function(mutations) {
+      mutations.forEach(function(mutation) {
+        that.startEqualize(selector);
+      });
     });
+
+    for (var i = 0, len = $selector.length; i < len; i++) {
+      this.equalizerObserver.observe($selector[i], config);
+    }
   },
 
   _getMaxHeight: function($el) {
