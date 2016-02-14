@@ -1,22 +1,20 @@
 "use strict";
 
-var packageJson = require('../../package.json');
-
 window.AB = {
-  name:           packageJson.name,
-  description:    packageJson.description,
-  version:        packageJson.version,
-  author:         packageJson.author,
+  name:           "AB - Another Brick on the web",
+  description:    "Plugins collection to solve everyday problems in web sites development",
+  version:        "0.1.0",
+  author:         "Thierry Philippe - www.thierryphilippe.fr",
 
   about: function() {
     console.log(this.name + ": " + this.description + " v" + this.version + " by " + this.author.name + " (" + this.author.email + ")");
   },
 
   init: function(plugins){
-    // must init plugins
+    // mandatory plugins
     AB.mediaQuery();
 
-    // user init plugins
+    // init add-ons
     for (var plugin in plugins) {
       if (plugins.hasOwnProperty(plugin)) {
         AB[plugin](plugins[plugin]);

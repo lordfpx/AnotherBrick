@@ -1,67 +1,21 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-module.exports={
-  "name": "AnotherBrick",
-  "version": "0.1.0",
-  "description": "Another Brick... on the web",
-  "main": "gulpfile.js",
-  "scripts": {
-    "start": "gulp",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "homepage": "",
-  "author": {
-    "name": "Thierry Philippe",
-    "email": "contact@thierryphilippe.fr"
-  },
-  "repository": {
-    "type": "MIT",
-    "url": "https://github.com/lordfpx/AnotherBrick"
-  },
-  "license": "ISC",
-  "devDependencies": {
-    "browser-sync": "^2.9.11",
-    "browserify": "^10.1.2",
-    "chai": "^3.4.1",
-    "del": "^2.2.0",
-    "gulp": "^3.8.11",
-    "gulp-jade": "^1.1.0",
-    "gulp-jshint": "^1.11.2",
-    "gulp-sass": "^2.0.0",
-    "gulp-sequence": "^0.3.2",
-    "gulp-sourcemaps": "^1.5.2",
-    "gulp-streamify": "0.0.5",
-    "gulp-uglify": "^1.2.0",
-    "gulp-util": "^3.0.4",
-    "gulp-watch": "^4.2.4",
-    "jshint-stylish": "^2.1.0",
-    "vinyl-source-stream": "^1.1.0",
-    "watchify": "^3.2.1"
-  },
-  "dependencies": {
-    "jquery": "^2.2.0"
-  }
-}
-
-},{}],2:[function(require,module,exports){
 "use strict";
 
-var packageJson = require('../../package.json');
-
 window.AB = {
-  name:           packageJson.name,
-  description:    packageJson.description,
-  version:        packageJson.version,
-  author:         packageJson.author,
+  name:           "AB - Another Brick on the web",
+  description:    "Plugins collection to solve everyday problems in web sites development",
+  version:        "0.1.0",
+  author:         "Thierry Philippe - www.thierryphilippe.fr",
 
   about: function() {
     console.log(this.name + ": " + this.description + " v" + this.version + " by " + this.author.name + " (" + this.author.email + ")");
   },
 
   init: function(plugins){
-    // must init plugins
+    // mandatory plugins
     AB.mediaQuery();
 
-    // user init plugins
+    // init add-ons
     for (var plugin in plugins) {
       if (plugins.hasOwnProperty(plugin)) {
         AB[plugin](plugins[plugin]);
@@ -79,7 +33,7 @@ window.AB = {
   interchange:    require('../js/AB-interchange')
 };
 
-},{"../../package.json":1,"../js/AB-deviceDetect":3,"../js/AB-easing":4,"../js/AB-equalizer":5,"../js/AB-fn":6,"../js/AB-imagesLoaded":7,"../js/AB-interchange":8,"../js/AB-mediaQuery":9,"../js/AB-scrollTo":10}],3:[function(require,module,exports){
+},{"../js/AB-deviceDetect":2,"../js/AB-easing":3,"../js/AB-equalizer":4,"../js/AB-fn":5,"../js/AB-imagesLoaded":6,"../js/AB-interchange":7,"../js/AB-mediaQuery":8,"../js/AB-scrollTo":9}],2:[function(require,module,exports){
 "use strict";
 
 /*
@@ -143,7 +97,7 @@ var deviceDetect = {
 
 module.exports = deviceDetect;
 
-},{}],4:[function(require,module,exports){
+},{}],3:[function(require,module,exports){
 "use strict";
 
 // https://github.com/danro/jquery-easing/blob/master/jquery.easing.js
@@ -307,7 +261,7 @@ var easing = {
 
 module.exports = easing;
 
-},{}],5:[function(require,module,exports){
+},{}],4:[function(require,module,exports){
 "use strict";
 
 /*
@@ -416,7 +370,7 @@ function equalizer(opt){
 
 module.exports = equalizer;
 
-},{}],6:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 "use strict";
 
 var fn = {
@@ -435,7 +389,7 @@ var fn = {
 
 module.exports = fn;
 
-},{}],7:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 "use strict";
 
 /*
@@ -480,7 +434,7 @@ function imagesLoaded($wrapper, callback) {
 
 module.exports = imagesLoaded;
 
-},{}],8:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 "use strict";
 
 /*
@@ -603,7 +557,7 @@ function interchange(opt){
 
 module.exports = interchange;
 
-},{}],9:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 "use strict";
 
 /*
@@ -784,7 +738,7 @@ function mediaQuery(opt) {
 
 module.exports = mediaQuery;
 
-},{}],10:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 "use strict";
 
 /*
@@ -924,4 +878,4 @@ ScrollTo.prototype = {
 
 module.exports = ScrollTo;
 
-},{}]},{},[2]);
+},{}]},{},[1]);
