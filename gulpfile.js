@@ -97,6 +97,13 @@ gulp.task('copy:scss', function() {
     .pipe(gulp.dest('./build/scss/'))
     .pipe(browserSync.stream());
 });
+gulp.task('copy:assets', function() {
+  return gulp.src([
+      'src/views/img/*'
+    ])
+    .pipe(gulp.dest('./build/img/'))
+    .pipe(browserSync.stream());
+});
 
 
 // browser sync server
@@ -113,7 +120,7 @@ gulp.task('serve', function() {
     notify: true,
     reloadOnRestart: true
   }, function callback() {
-    gulp.watch('src/views/**/*.jade', ['jade', browserSync.reload]);
+    gulp.watch('src/views/**/*.jade', ['jade', 'copy:assets', browserSync.reload]);
     gulp.watch('src/scss/**/*.scss', ['sass', 'copy:scss']);
     gulp.watch('src/js/demo/*.js', ['copy:js', browserSync.reload]);
     gulp.watch('build/js/*.js', ['lint']);
@@ -123,7 +130,7 @@ gulp.task('serve', function() {
 
 // GULP build task
 gulp.task('build', gulpSequence(
-  'clean', ['copy:js', 'jade', 'sass', 'copy:scss', 'js'],
+  'clean', ['copy:js', 'jade', 'copy:assets', 'sass', 'copy:scss', 'js'],
   'lint'
 ));
 

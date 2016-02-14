@@ -77,6 +77,41 @@ MediaQuery.prototype = {
 
     this.current = this._getCurrentSize();
     this._watcher();
+    this._setVar();
+
+    return this;
+  },
+
+  _setVar: function() {
+    var namedQueries = this.getQueries();
+    this.is = {};
+
+    for (var key in namedQueries) {
+      if( namedQueries.hasOwnProperty( key ) ) {
+        switch (key) {
+          case 'small':
+            this.is[key + '_only']  = 'only screen and (max-width: ' + namedQueries[key] + ')';
+            this.is[key + '_up']    = 'only screen';
+            break;
+          case 'medium':
+            this.is[key + '_only']  = 'only screen and (min-width: ' + namedQueries[key] + ') and (max-width: ' + namedQueries.large + ')';
+            this.is[key + '_up']    = 'only screen and (min-width: ' + namedQueries[key] + ')';
+            break;
+          case 'large':
+            this.is[key + '_only']  = 'only screen and (min-width: ' + namedQueries[key] + ') and (max-width: ' + namedQueries.xlarge + ')';
+            this.is[key + '_up']    = 'only screen and (min-width: ' + namedQueries[key] + ')';
+            break;
+          case 'xlarge':
+            this.is[key + '_only']  = 'only screen and (min-width: ' + namedQueries[key] + ') and (max-width: ' + namedQueries.xxlarge + ')';
+            this.is[key + '_up']    = 'only screen and (min-width: ' + namedQueries[key] + ')';
+            break;
+          case 'xxlarge':
+            this.is[key + '_only']  = 'only screen and (min-width: ' + namedQueries[key] + ')';
+            this.is[key + '_up']    = 'only screen and (min-width: ' + namedQueries[key] + ')';
+            break;
+        }
+      }
+    }
   },
 
   _getCurrentSize: function() {
@@ -118,11 +153,11 @@ MediaQuery.prototype = {
         resizeTimeout,
         newSize;
 
-    $(window).on('resize.ab.mediaquery', function() {
+    $(window).on('resize.ab-mediaquery', function() {
       newSize = that._getCurrentSize();
 
       if (newSize !== that.current) {
-        $(window).trigger('changed.ab.mediaquery', [newSize, that.current]);
+        $(window).trigger('changed.ab-mediaquery', [newSize, that.current]);
         that.current = newSize;
       }
     });
@@ -134,8 +169,6 @@ MediaQuery.prototype = {
     if (query) {
       return window.matchMedia(query).matches;
     }
-
-    return false;
   }
 };
 

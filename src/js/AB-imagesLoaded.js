@@ -5,15 +5,16 @@ From https://github.com/zurb/foundation-sites
 
 USAGE:
 
-var imagesLoadedCallback = function() {
+var callback = function() {
   console.log('imagesLoadedCallback: Images loaded');
 };
-AB.imagesLoaded( $('img'), imagesLoadedCallback );
+AB.imagesLoaded( $('img'), callback );
 
 */
 
-function imagesLoaded(images, callback) {
-  var unloaded = images.length;
+function imagesLoaded($wrapper, callback) {
+  var $images = $wrapper.find('img'),
+      unloaded = $images.length;
 
   if (unloaded === 0) {
     callback();
@@ -27,7 +28,8 @@ function imagesLoaded(images, callback) {
   };
 
   for (var i = 0, len = unloaded; i < len; i++) {
-    var image = images[i];
+    var image = $images[i];
+
     if (image.complete) {
       singleImageLoaded();
     } else if (typeof image.naturalWidth !== 'undefined' && image.naturalWidth >0) {

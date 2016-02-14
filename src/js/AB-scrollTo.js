@@ -35,8 +35,8 @@ ScrollTo.prototype = {
     var that = this;
 
     $(document)
-      .off('click.ab.scrollTo')
-      .on('click.ab.scrollTo', this.trigger, function(e) {
+      .off('click.ab-scrollTo')
+      .on('click.ab-scrollTo', this.trigger, function(e) {
         e.preventDefault();
         var $this = $(this);
 
@@ -127,7 +127,7 @@ ScrollTo.prototype = {
       if (currentTime < that.settings.duration) {
         requestAnimFrame(animateScroll);
       } else {
-        $(document).trigger('ab.scrollTo.end', [$target]);
+        $(document).trigger('scrolled.ab-scrollTo', [$target]);
       }
     };
 
@@ -135,6 +135,4 @@ ScrollTo.prototype = {
   }
 };
 
-module.exports = function(opt) {
-  return new ScrollTo(opt);
-};
+module.exports = ScrollTo;

@@ -1,73 +1,39 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-module.exports={
-  "name": "AnotherBrick",
-  "version": "0.1.0",
-  "description": "Another Brick... on the web",
-  "main": "gulpfile.js",
-  "scripts": {
-    "start": "gulp",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "homepage": "",
-  "author": {
-    "name": "Thierry Philippe",
-    "email": "contact@thierryphilippe.fr"
-  },
-  "repository": {
-    "type": "MIT",
-    "url": "https://github.com/lordfpx/AnotherBrick"
-  },
-  "license": "ISC",
-  "devDependencies": {
-    "browser-sync": "^2.9.11",
-    "browserify": "^10.1.2",
-    "chai": "^3.4.1",
-    "del": "^2.2.0",
-    "gulp": "^3.8.11",
-    "gulp-jade": "^1.1.0",
-    "gulp-jshint": "^1.11.2",
-    "gulp-sass": "^2.0.0",
-    "gulp-sequence": "^0.3.2",
-    "gulp-sourcemaps": "^1.5.2",
-    "gulp-streamify": "0.0.5",
-    "gulp-uglify": "^1.2.0",
-    "gulp-util": "^3.0.4",
-    "gulp-watch": "^4.2.4",
-    "jshint-stylish": "^2.1.0",
-    "vinyl-source-stream": "^1.1.0",
-    "watchify": "^3.2.1"
-  },
-  "dependencies": {
-    "jquery": "^2.2.0"
-  }
-}
-
-},{}],2:[function(require,module,exports){
 "use strict";
 
-var packageJson = require('../../package.json');
-
 window.AB = {
-  name:           packageJson.name,
-  description:    packageJson.description,
-  version:        packageJson.version,
-  author:         packageJson.author,
+  name:           "AB - Another Brick on the web",
+  description:    "Plugins collection to solve everyday problems in web sites development",
+  version:        "0.1.0",
+  author:         "Thierry Philippe - www.thierryphilippe.fr",
 
   about: function() {
     console.log(this.name + ": " + this.description + " v" + this.version + " by " + this.author.name + " (" + this.author.email + ")");
   },
 
+  init: function(plugins){
+    // mandatory plugins
+    AB.mediaQuery();
+
+    // init add-ons
+    for (var plugin in plugins) {
+      if (plugins.hasOwnProperty(plugin)) {
+        AB[plugin](plugins[plugin]);
+      }
+    }
+  },
+
   fn:             require('../js/AB-fn'),
   easing:         require('../js/AB-easing'),
   imagesLoaded:   require('../js/AB-imagesLoaded'),
-  resizeEvent:    require('../js/AB-resizeEvent'),
   equalizer:      require('../js/AB-equalizer'),
   deviceDetect:   require('../js/AB-deviceDetect'),
   mediaQuery:     require('../js/AB-mediaQuery'),
-  scrollTo:       require('../js/AB-scrollTo')
+  scrollTo:       require('../js/AB-scrollTo'),
+  interchange:    require('../js/AB-interchange')
 };
 
-},{"../../package.json":1,"../js/AB-deviceDetect":3,"../js/AB-easing":4,"../js/AB-equalizer":5,"../js/AB-fn":6,"../js/AB-imagesLoaded":7,"../js/AB-mediaQuery":8,"../js/AB-resizeEvent":9,"../js/AB-scrollTo":10}],3:[function(require,module,exports){
+},{"../js/AB-deviceDetect":2,"../js/AB-easing":3,"../js/AB-equalizer":4,"../js/AB-fn":5,"../js/AB-imagesLoaded":6,"../js/AB-interchange":7,"../js/AB-mediaQuery":8,"../js/AB-scrollTo":9}],2:[function(require,module,exports){
 "use strict";
 
 /*
@@ -131,7 +97,7 @@ var deviceDetect = {
 
 module.exports = deviceDetect;
 
-},{}],4:[function(require,module,exports){
+},{}],3:[function(require,module,exports){
 "use strict";
 
 // https://github.com/danro/jquery-easing/blob/master/jquery.easing.js
@@ -295,7 +261,7 @@ var easing = {
 
 module.exports = easing;
 
-},{}],5:[function(require,module,exports){
+},{}],4:[function(require,module,exports){
 "use strict";
 
 /*
@@ -303,49 +269,78 @@ USAGE
 
 */
 
-function Equalizer(selector) {
-  if (!(this instanceof Equalizer)) {
-    return new Equalizer(selector);
-  }
+// filter elements to keep only 1 elements with same attribute and value
+function uniqueElByAttributeValue($elArray, attribute) {
+  var obj = {},
+      category;
 
-  this.selector = selector;
-  this.wrapper = $(selector);
+  var filteredEl = $elArray.filter(function(){
+    category = $(this).attr(attribute);
+    if(obj[category]){
+      return false;
+    } else {
+      obj[category] = true;
+      return true;
+    }
+  });
 
-  if (this.wrapper.length) {
-    this.init();
-  }
+  return filteredEl;
 }
+
+
+function Equalizer(element, opt) {
+  if (!(this instanceof Equalizer)) {
+    return new Equalizer(element, opt);
+  }
+
+  this.settings = $.extend({}, Equalizer.defaults, opt);
+
+  this.$el = $(element);
+  this.resizeEvent = {};
+
+  this.init();
+}
+
+Equalizer.defaults = {};
 
 Equalizer.prototype = {
   init: function() {
     var that = this,
-        $img = this.wrapper.find('img');
+        $el = this.$el;
 
-    if ($img.length) {
-      AB.imagesLoaded($img, function() {
-        that._equalize(that._getHeight());
-        that._watch();
-      });
-      return;
+    for (var i = 0, len = $el.length; i < len; i++) {
+      var selectorValue = $( $el[i] ).attr('data-ab-equalizer'),
+          selector = '[data-ab-equalizer="'+ selectorValue +'"]';
+
+      this.startEqualize(selector);
     }
 
-    this._equalize(this._getHeight());
-    this._watch();
+    return this;
   },
 
-  _watch: function() {
+  startEqualize: function(selector){
     var that = this,
-        selector = this.selector,
-        randomString = Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 5);
+        $wrapper = $(selector);
 
-    randomString = AB.resizeEvent(selector, function(){
-      that._equalize(that._getHeight());
+    AB.imagesLoaded($wrapper, function() {
+      that._equalize($wrapper)
+          ._watch(selector, $wrapper);
     });
   },
 
-  _getHeight: function() {
-    var heights = [],
-        $el = this.wrapper;
+  _watch: function(selector, $el) {
+    var that = this,
+        $wrapper = $(selector);
+
+    $(window).on('resize.ab-equalizer', function(){
+      setTimeout(function(){
+        that._equalize($wrapper);
+      }, 250);
+    });
+  },
+
+  _getMaxHeight: function($el) {
+    var heights = [];
 
     for (var i = 0, len = $el.length; i < len; i++) {
       $($el[i]).css('height', '');
@@ -355,32 +350,27 @@ Equalizer.prototype = {
     return Math.max.apply(null, heights);
   },
 
-  _equalize: function(height) {
-    this.wrapper.css('height', height);
-    $(window).trigger('ab.equalizer.equalized', [this.wrapper, height]);
-  },
+  _equalize: function($el) {
+    var height = this._getMaxHeight($el);
 
-  destroy: function() {
-    $(window).off('rab.equalizer.equalized');
-    this.wrapper.css('height', '');
+    $el.css('height', height);
+    $(window).trigger('equalized.ab-equalizer', [$el]);
+
+    return this;
   }
 };
 
-function equalizer(opt) {
-  var $trigger = $('[data-ab-equalizer]');
-  var $filtered = AB.fn.uniqueElByAttributeValue($trigger, 'data-ab-equalizer');
+function equalizer(opt){
+  var elements = uniqueElByAttributeValue($('[data-ab-equalizer]'), 'data-ab-equalizer');
 
-  for (var i = 0, len = $filtered.length; i < len; i++) {
-    var selectorValue = $($filtered[i]).attr('data-ab-equalizer'),
-        selector = '[data-ab-equalizer="'+ selectorValue +'"]';
-
-    selectorValue = new Equalizer(selector);
+  for (var i = 0, len = elements.length; i < len; i++) {
+    var init = new Equalizer(elements[i], opt);
   }
 }
 
 module.exports = equalizer;
 
-},{}],6:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 "use strict";
 
 var fn = {
@@ -393,31 +383,13 @@ var fn = {
       return false;
     }
     return true;
-  },
-
-  // filter elements to keep only 1 elements with same attribute and value
-  uniqueElByAttributeValue: function($elArray, attribute) {
-    var obj = {},
-        category;
-
-    var filteredEl = $elArray.filter(function(){
-      category = $(this).attr(attribute);
-      if(obj[category]){
-        return false;
-      } else {
-        obj[category] = true;
-        return true;
-      }
-    });
-
-    return filteredEl;
   }
 
 };
 
 module.exports = fn;
 
-},{}],7:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 "use strict";
 
 /*
@@ -425,15 +397,16 @@ From https://github.com/zurb/foundation-sites
 
 USAGE:
 
-var imagesLoadedCallback = function() {
+var callback = function() {
   console.log('imagesLoadedCallback: Images loaded');
 };
-AB.imagesLoaded( $('img'), imagesLoadedCallback );
+AB.imagesLoaded( $('img'), callback );
 
 */
 
-function imagesLoaded(images, callback) {
-  var unloaded = images.length;
+function imagesLoaded($wrapper, callback) {
+  var $images = $wrapper.find('img'),
+      unloaded = $images.length;
 
   if (unloaded === 0) {
     callback();
@@ -447,7 +420,8 @@ function imagesLoaded(images, callback) {
   };
 
   for (var i = 0, len = unloaded; i < len; i++) {
-    var image = images[i];
+    var image = $images[i];
+
     if (image.complete) {
       singleImageLoaded();
     } else if (typeof image.naturalWidth !== 'undefined' && image.naturalWidth >0) {
@@ -459,6 +433,129 @@ function imagesLoaded(images, callback) {
 }
 
 module.exports = imagesLoaded;
+
+},{}],7:[function(require,module,exports){
+"use strict";
+
+/*
+Heavily inspired by https://github.com/zurb/foundation-sites
+
+
+*/
+
+
+var Interchange = function(element, opt) {
+  if (!(this instanceof Interchange)) {
+    return new Interchange(element, opt);
+  }
+
+  this.settings = $.extend({}, Interchange.defaults, opt);
+
+  this.$element = $(element);
+  this.rules = [];
+
+  this.init()
+      ._events();
+};
+
+Interchange.defaults = {
+  rules: null
+};
+
+Interchange.prototype = {
+  init: function() {
+    this._generateRules()
+        ._reflow();
+
+    return this;
+  },
+
+  _generateRules: function() {
+    var rulesList = [],
+        rules;
+
+    if (this.settings.rules) {
+      rules = this.settings.rules;
+    }
+    else {
+      rules = this.$element.data('ab-interchange').match(/\[.*?\]/g);
+    }
+
+    for (var i = 0, len = rules.length; i < len; i++) {
+      var rule = rules[i].slice(1, -1).split(', '),
+          path = rule.slice(0, -1).join(''),
+          query = rule[rule.length - 1];
+
+      rulesList.push({
+        path: path,
+        query: query
+      });
+    }
+
+    this.rules = rulesList;
+
+    return this;
+  },
+
+  _reflow: function() {
+    var match,
+        path,
+        currentQuery = AB.mediaQuery.current;
+
+    // Iterate through each rule
+    for (var i = 0, len = this.rules.length; i < len; i++) {
+      var rule = this.rules[i];
+
+      if ( window.matchMedia(AB.mediaQuery.get(rule.query)).matches ) {
+        path = rule.path;
+        match = true;
+      }
+    }
+
+    if (match) {
+      this._replace(path);
+    }
+  },
+
+  _events: function() {
+    $(window).on('resize.ab-interchange', this._reflow.bind(this));
+  },
+
+  _replace: function(path) {
+    if (this.currentPath === path) return;
+
+    var that = this,
+        trigger = 'replaced.ab-interchange';
+
+    // Replacing images
+    if (this.$element[0].nodeName === 'IMG') {
+      this.$element.attr('src', path).load(function() {
+        that.currentPath = path;
+      }).trigger(trigger);
+    }
+    // Replacing background images
+    else if (path.match(/\.(gif|jpg|jpeg|tiff|png)([?#].*)?/i)) {
+      this.$element.css({ 'background-image': 'url('+path+')' }).trigger(trigger);
+    }
+    // Replacing HTML
+    else {
+      $.get(path, function(response) {
+        that.$element.html(response).trigger(trigger);
+        that.currentPath = path;
+      });
+    }
+  }
+};
+
+function interchange(opt){
+  var elements = document.querySelectorAll('[data-ab-interchange]');
+
+  for (var i = 0, len = elements.length; i < len; i++) {
+    var init = new Interchange(elements[i], opt);
+  }
+}
+
+module.exports = interchange;
 
 },{}],8:[function(require,module,exports){
 "use strict";
@@ -540,6 +637,41 @@ MediaQuery.prototype = {
 
     this.current = this._getCurrentSize();
     this._watcher();
+    this._setVar();
+
+    return this;
+  },
+
+  _setVar: function() {
+    var namedQueries = this.getQueries();
+    this.is = {};
+
+    for (var key in namedQueries) {
+      if( namedQueries.hasOwnProperty( key ) ) {
+        switch (key) {
+          case 'small':
+            this.is[key + '_only']  = 'only screen and (max-width: ' + namedQueries[key] + ')';
+            this.is[key + '_up']    = 'only screen';
+            break;
+          case 'medium':
+            this.is[key + '_only']  = 'only screen and (min-width: ' + namedQueries[key] + ') and (max-width: ' + namedQueries.large + ')';
+            this.is[key + '_up']    = 'only screen and (min-width: ' + namedQueries[key] + ')';
+            break;
+          case 'large':
+            this.is[key + '_only']  = 'only screen and (min-width: ' + namedQueries[key] + ') and (max-width: ' + namedQueries.xlarge + ')';
+            this.is[key + '_up']    = 'only screen and (min-width: ' + namedQueries[key] + ')';
+            break;
+          case 'xlarge':
+            this.is[key + '_only']  = 'only screen and (min-width: ' + namedQueries[key] + ') and (max-width: ' + namedQueries.xxlarge + ')';
+            this.is[key + '_up']    = 'only screen and (min-width: ' + namedQueries[key] + ')';
+            break;
+          case 'xxlarge':
+            this.is[key + '_only']  = 'only screen and (min-width: ' + namedQueries[key] + ')';
+            this.is[key + '_up']    = 'only screen and (min-width: ' + namedQueries[key] + ')';
+            break;
+        }
+      }
+    }
   },
 
   _getCurrentSize: function() {
@@ -581,11 +713,11 @@ MediaQuery.prototype = {
         resizeTimeout,
         newSize;
 
-    $(window).on('resize.ab.mediaquery', function() {
+    $(window).on('resize.ab-mediaquery', function() {
       newSize = that._getCurrentSize();
 
       if (newSize !== that.current) {
-        $(window).trigger('changed.ab.mediaquery', [newSize, that.current]);
+        $(window).trigger('changed.ab-mediaquery', [newSize, that.current]);
         that.current = newSize;
       }
     });
@@ -597,8 +729,6 @@ MediaQuery.prototype = {
     if (query) {
       return window.matchMedia(query).matches;
     }
-
-    return false;
   }
 };
 
@@ -609,71 +739,6 @@ function mediaQuery(opt) {
 module.exports = mediaQuery;
 
 },{}],9:[function(require,module,exports){
-"use strict";
-
-/*
-
-Origin: http://manos.malihu.gr/event-based-jquery-element-resize/
-
-USAGE
-
-var someVariable = AB.resizeEvent('selector', function(){
-  ... callback
-});
-
-*/
-
-function ResizeEvent(el, callback) {
-  if (!(this instanceof ResizeEvent)) {
-    return new ResizeEvent(el, callback);
-  }
-
-  this.el = el;
-  this.callback = callback;
-
-  if (this.el.length) {
-    this.init();
-  }
-}
-
-ResizeEvent.prototype = {
-  init: function() {
-    var that = this,
-        selector = this.el,
-        timeout = false,
-        delay = 200; // delay the callback
-
-    [].forEach.call(document.querySelectorAll(selector), function(el) {
-      el.mr = [el.offsetWidth, el.offsetHeight];
-      el.insertAdjacentHTML("beforeend", "<div class='AB-resizeEvent-frame' style='position:absolute;width:auto;height:auto;top:0;right:0;bottom:0;left:0;margin:0;padding:0;overflow:hidden;visibility:hidden;z-index:-1'><iframe style='width:100%;height:0;border:0;visibility:visible;margin:0'></iframe><iframe style='width:0;height:100%;border:0;visibility:visible;margin:0'></iframe></div>");
-      if (el.style.position === "static" || el.style.position === "") {
-        el.style.position = "relative";
-      }
-      [].forEach.call(el.querySelectorAll(".AB-resizeEvent-frame iframe"), function(frame) {
-        (frame.contentWindow || frame).onresize = function() {
-          clearTimeout(timeout);
-          timeout = setTimeout(function(){
-            if (el.mr[0] !== el.offsetWidth || el.mr[1] !== el.offsetHeight) {
-              if (that.callback) {
-                that.callback.call(el);
-              }
-              el.mr[0] = el.offsetWidth;
-              el.mr[1] = el.offsetHeight;
-            }
-          }, delay);
-        };
-      });
-    });
-  }
-};
-
-function resizeEvent(el, callback) {
-  AB.mediaQuery = new ResizeEvent(el, callback);
-}
-
-module.exports = resizeEvent;
-
-},{}],10:[function(require,module,exports){
 "use strict";
 
 /*
@@ -711,8 +776,8 @@ ScrollTo.prototype = {
     var that = this;
 
     $(document)
-      .off('click.ab.scrollTo')
-      .on('click.ab.scrollTo', this.trigger, function(e) {
+      .off('click.ab-scrollTo')
+      .on('click.ab-scrollTo', this.trigger, function(e) {
         e.preventDefault();
         var $this = $(this);
 
@@ -803,7 +868,7 @@ ScrollTo.prototype = {
       if (currentTime < that.settings.duration) {
         requestAnimFrame(animateScroll);
       } else {
-        $(document).trigger('ab.scrollTo.end', [$target]);
+        $(document).trigger('scrolled.ab-scrollTo', [$target]);
       }
     };
 
@@ -811,8 +876,6 @@ ScrollTo.prototype = {
   }
 };
 
-module.exports = function(opt) {
-  return new ScrollTo(opt);
-};
+module.exports = ScrollTo;
 
-},{}]},{},[2]);
+},{}]},{},[1]);

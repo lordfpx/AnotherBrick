@@ -133,13 +133,3 @@ Check "example-usage.js" for usage in your scripts.
       easing: 'swing'
     });
     ```
-
-* ### AB.resizeEvent
-    (from http://manos.malihu.gr/event-based-jquery-element-resize/)
-    watch element resizing and send callback (used in AB.equalizer).
-
-    ```
-    var someVariable = AB.resizeEvent('selector', function(){
-      ... callback
-    });
-    ```
