@@ -22,12 +22,12 @@ window.AB = {
     }
   },
 
-  fn:             require('../js/AB-fn'),
-  easing:         require('../js/AB-easing'),
-  imagesLoaded:   require('../js/AB-imagesLoaded'),
-  equalizer:      require('../js/AB-equalizer'),
-  deviceDetect:   require('../js/AB-deviceDetect'),
-  mediaQuery:     require('../js/AB-mediaQuery'),
-  scrollTo:       require('../js/AB-scrollTo'),
-  interchange:    require('../js/AB-interchange')
+  fn:             require('../js/AB-fn'),             // self initialized
+  easing:         require('../js/AB-easing'),         // self initialized
+  imagesLoaded:   require('../js/AB-imagesLoaded'),   // self initialized
+  equalizer:      require('../js/AB-equalizer'),      // user's choice
+  deviceDetect:   require('../js/AB-deviceDetect'),   // self initialized
+  mediaQuery:     require('../js/AB-mediaQuery'),     // mandatory (initialized by core)
+  scrollTo:       require('../js/AB-scrollTo'),       // user's choice
+  interchange:    require('../js/AB-interchange')     // user's choice
 };
