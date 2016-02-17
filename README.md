@@ -1,41 +1,62 @@
 # AB - Another Brick
-I'll try to add convenient plugins. I'll extract some from frameworks, I'll write others.
-The idea behind this project is to give you bricks of Javascripts to solve usual design difficulties.
+When creating a website, we always face the same problems such as load assets depending on mediaqueries, equalize element's height, etc. AB is there to help you deals with that.
+It's a plugins bundle with some code taken from Zurb Foundation (and adapted), others from me and other sources.
+The idea behind this project is to give you bricks of JavaScripts to solve usual design difficulties.
 
 
 ## Basic usage
-AB depend on jQuery, so load jQuery first, then load AB.js.
+AB depend on jQuery. You need to load it first, then AB.js.
 AB is directly executed and give you access to its methods.
 
-Check "example-usage.js" for usage in your scripts.
+Some plugins are optional and can be initialized that way:
+
+```
+AB.init({
+  // equalizer: no specific options
+  equalizer: {},
+
+  /* scrollTo:
+  options:
+  - duration: 500,
+  - offset: 0, (scroll before or after the target, usefull when using sticky navigation)
+  - easing: 'easeOutQuad' (check AB.easing opbject in browser console for all available easings)
+  */
+  scrollTo: {
+    duration: 1000
+  },
+
+  // interchange: no specific options
+  interchange: {}
+});
+```
+
+Check "example-usage.js" for usage and open index.html to inspect, test and look in the browser console.
 
 * ### AB-fn
-    It's a pack of utilities functions:
+    It's a pack of utilities functions. By now, it's quite limited:
     * AB.fn.isJson(string)
       return true is a string can be parsed to JSON format to prevent famous Uncaught SyntaxError: Unexpected token ;-)
-    * AB.fn.uniqueElByAttributeValue(array of elements, attribute to check value)
-      return the same array but keeping only elements with unique attribute value
 
 
 * ### AB-easing
     (From https://github.com/danro/jquery-easing/blob/master/jquery.easing.js)
-    Lot of well known easing collection of functions.
+    Lots of well known easing collection of functions.
 
 
 * ### AB-mediaQuery
     (Inspired a lot from http://foundation.zurb.com/)
-    First, you need to prepare your SCSS. CSS and JS breakpoints will be shared:
+    First, you need to prepare your SCSS by editing and importing "AB-settings" in your scss. CSS and JS breakpoints will be shared It's VERY important to use same values defined in AB-settings.scss and your own breakpoints!
 
     #### SCSS preparation and usage
       Add `@import "AB-settings";` at the top of your main SCSS file, then you can define your breakpoints variables with the unit you want.
 
-      You can use in your SCSS files like that:
+      You can then use in your SCSS files like that (instead of creating duplicate variables on your side):
         ```
         @media #{$medium-up} {
           // here comes styles for medium and up breakpoints
         }
         ```
-      ... or you can still use your prefered scss framework indeed assuming you are using same breakpoints values ;-).
+      ... but you can still use your preferred scss framework indeed assuming you are using same breakpoints values again.
 
     #### JS usage
       * Get current breakpoint:
@@ -52,7 +73,7 @@ Check "example-usage.js" for usage in your scripts.
 
       * Listener on breakpoint change
       ```
-      $(window).on('changed.ab.mediaquery', function(e, newSize, current) {
+      $(window).on('changed.ab-mediaquery', function(e, newSize, current) {
         console.log(newSize, current);
       });
       ```
@@ -83,8 +104,6 @@ Check "example-usage.js" for usage in your scripts.
       Lorem
     </div>
     ```
-
-    You can nest, the height is always "watched" to keep elements always equalized.
 
 
 * ### AB.deviceDetect
