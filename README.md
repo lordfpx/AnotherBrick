@@ -138,7 +138,7 @@ Check "example-usage.js" for usage and open index.html to inspect, test and look
     var imagesLoadedCallback = function() {
       console.log('imagesLoadedCallback: Images loaded');
     };
-    AB.imagesLoaded( $('img'), imagesLoadedCallback );
+    AB.imagesLoaded( $('.some-element'), imagesLoadedCallback );
     ```
 
 * ### AB.scrollTo
