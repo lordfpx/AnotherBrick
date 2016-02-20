@@ -13,6 +13,14 @@ AB.scrollTo = new AB.scrollTo({
 
 */
 
+/**
+ * Smooth scroll to link anchors or to the element specified in data-ab-scrollto attribute
+ * @param {object} opt user options
+ *
+ * @example
+ * AB.scrollTo = new AB.scrollTo();
+ */
+
 function ScrollTo(opt) {
   if (!(this instanceof ScrollTo)) {
     return new ScrollTo(opt);
@@ -48,6 +56,10 @@ ScrollTo.prototype = {
       });
   },
 
+  /**
+   * Get the target element from data-ab-scrollto
+   * @param  {object} $el Element triggered to get it's target
+   */
   getTarget: function($el) {
     var $target = $($el.data('ab-scrollto'));
     if ($target.length) {
@@ -55,7 +67,12 @@ ScrollTo.prototype = {
     }
   },
 
+  /**
+   * Get the target element from href
+   * @param  {object} el Link triggered
+   */
   getAnchor: function(el) {
+    console.log(typeof el);
     var location = window.location;
 
     if (location.pathname.replace(/^\//, '') === el.pathname.replace(/^\//, '') && location.hostname === el.hostname) {
@@ -68,6 +85,10 @@ ScrollTo.prototype = {
     }
   },
 
+  /**
+   * Scroll to that element
+   * @param  {object} $target scroll to that element target
+   */
   scroll: function($target) {
     var that = this;
 
