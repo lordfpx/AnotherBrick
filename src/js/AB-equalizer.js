@@ -66,12 +66,17 @@ Equalizer.prototype = {
 
   _watch: function(selector, $el) {
     var that = this,
-        $wrapper = $(selector);
+        $wrapper = $(selector),
+        scrollTimeout;
 
     $(window).on('resize.ab-equalizer', function(){
-      setTimeout(function(){
+      if (scrollTimeout) {
+        clearTimeout(scrollTimeout);
+        scrollTimeout = null;
+      }
+      scrollTimeout = setTimeout(function(){
         that._equalize($wrapper);
-      }, 250);
+      }, 200);
     });
   },
 
@@ -100,7 +105,9 @@ function equalizer(opt){
   var elements = uniqueElByAttributeValue($('[data-ab-equalizer]'), 'data-ab-equalizer');
 
   for (var i = 0, len = elements.length; i < len; i++) {
-    var init = new Equalizer(elements[i], opt);
+    if (!elements[i].dataset.plugin_equalizer) {
+      elements[i].dataset.plugin_equalizer = new Equalizer(elements[i], opt);
+    }
   }
 }
 

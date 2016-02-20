@@ -31,11 +31,13 @@ console.log("AB.deviceDetect.isTouch() ==>", AB.deviceDetect.isTouch()); // retu
   init AB and your needed plugins
 
   Some plugins/scripts are always initilized for direct use:
-  - mediaQuery
   - imagesLoaded
   - fn
   - easing
   - deviceDetect
+
+  some are always initialized with default settings, but can be personalized:
+  - mediaQuery
 
   others are optional:
   - equalizer
@@ -44,6 +46,17 @@ console.log("AB.deviceDetect.isTouch() ==>", AB.deviceDetect.isTouch()); // retu
 */
 
 AB.init({
+  // mediaQuery plugin is ALWAYS initialized, but you can override default settings here if:
+  // - you are not using Sass technic (I don't recommand)
+  // - you don't want default values (this example show default values, so no need to do that!)
+  mediaQuery: {
+    small: "639px",
+    medium: "640px",
+    large: "1024px",
+    xlarge: "1200px",
+    xxlarge: "1440px"
+  },
+
   // equalizer: no specific options
   equalizer: {},
 

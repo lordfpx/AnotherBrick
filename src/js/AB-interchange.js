@@ -114,7 +114,9 @@ function interchange(opt){
   var elements = document.querySelectorAll('[data-ab-interchange]');
 
   for (var i = 0, len = elements.length; i < len; i++) {
-    var init = new Interchange(elements[i], opt);
+    if (!elements[i].dataset.plugin_interchange) {
+      elements[i].dataset.plugin_interchange = new Interchange(elements[i], opt);
+    }
   }
 }
 
