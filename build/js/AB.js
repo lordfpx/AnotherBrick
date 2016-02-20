@@ -764,27 +764,28 @@ module.exports = mediaQuery;
 },{}],9:[function(require,module,exports){
 "use strict";
 
-/*
-USAGE
-
-AB.scrollTo = new AB.scrollTo();
-
-AB.scrollTo = new AB.scrollTo({
-  duration: 1000,
-  offset: 0,
-  easing: 'swing'
-});
-
-*/
-
 /**
- * Smooth scroll to link anchors or to the element specified in data-ab-scrollto attribute
+ * @class
+ * Smooth scroll to anchor links or to the element specified in data-ab-scrollto attribute
  * @param {object} opt user options
+ * @param {number} opt.duration=500 Duration of the scroll
+ * @param {number} opt.offset=0 offset target (usefull when using a sticky navigation for ex.)
+ * @param {string} opt.easing=swing {@link easing}
  *
  * @example
- * AB.scrollTo = new AB.scrollTo();
+ * AB.init({
+ * 	scrollTo: {
+ * 		duration: 1000,
+ * 		offset: 0,
+ * 		easing: 'swing'
+ * 	}
+ * })
+ * 
+ * <a href="#target">...</a>
+ * or
+ * <div data-ab-scrollto=".target">...</div>
+ *
  */
-
 function ScrollTo(opt) {
   if (!(this instanceof ScrollTo)) {
     return new ScrollTo(opt);

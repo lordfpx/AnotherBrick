@@ -1,23 +1,39 @@
 <a name="ScrollTo"></a>
-## ScrollTo(opt)
-Smooth scroll to link anchors or to the element specified in data-ab-scrollto attribute
+## ScrollTo
+Smooth scroll to anchor links or to the element specified in data-ab-scrollto attribute
 
-**Kind**: global function  
+**Kind**: global class  
 
-| Param | Type | Description |
-| --- | --- | --- |
-| opt | <code>object</code> | user options |
-
-**Example**  
-```js
-AB.scrollTo = new AB.scrollTo();
-```
-
-* [ScrollTo(opt)](#ScrollTo)
+* [ScrollTo](#ScrollTo)
+    * [new ScrollTo(opt)](#new_ScrollTo_new)
     * [.getTarget($el)](#ScrollTo+getTarget)
     * [.getAnchor(el)](#ScrollTo+getAnchor)
     * [.scroll($target)](#ScrollTo+scroll)
 
+<a name="new_ScrollTo_new"></a>
+### new ScrollTo(opt)
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| opt | <code>object</code> |  | user options |
+| opt.duration | <code>number</code> | <code>500</code> | Duration of the scroll |
+| opt.offset | <code>number</code> | <code>0</code> | offset target (usefull when using a sticky navigation for ex.) |
+| opt.easing | <code>string</code> | <code>&quot;swing&quot;</code> | [easing](easing) |
+
+**Example**  
+```js
+AB.init({
+	scrollTo: {
+		duration: 1000,
+		offset: 0,
+		easing: 'swing'
+	}
+})
+
+<a href="#target">...</a>
+or
+<div data-ab-scrollto=".target">...</div>
+```
 <a name="ScrollTo+getTarget"></a>
 ### scrollTo.getTarget($el)
 Get the target element from data-ab-scrollto
