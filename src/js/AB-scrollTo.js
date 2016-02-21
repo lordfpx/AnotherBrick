@@ -1,12 +1,12 @@
 "use strict";
 
 /**
+ * Smooth scroll to anchor links or to the element specified in data-ab-scrollto attribute.
  * @class
- * Smooth scroll to anchor links or to the element specified in data-ab-scrollto attribute
- * @param {object} opt user options
- * @param {number} opt.duration=500 Duration of the scroll
- * @param {number} opt.offset=0 offset target (usefull when using a sticky navigation for ex.)
- * @param {string} opt.easing=swing {@link easing}
+ * @param {object=} opt - user options
+ * @param {number=} opt.duration=500 - Duration of the scroll
+ * @param {number=} opt.offset=0 - offset target (usefull when using a sticky navigation for ex.)
+ * @param {string=} opt.easing=swing - {@link easing}
  *
  * @example
  * AB.init({
@@ -16,9 +16,9 @@
  * 		easing: 'swing'
  * 	}
  * })
- * 
+ *
  * <a href="#target">...</a>
- * or
+ * // or
  * <div data-ab-scrollto=".target">...</div>
  *
  */
@@ -59,7 +59,7 @@ ScrollTo.prototype = {
 
   /**
    * Get the target element from data-ab-scrollto
-   * @param  {object} $el Element triggered to get it's target
+   * @param  {object} $el - Element triggered to get it's target
    */
   getTarget: function($el) {
     var $target = $($el.data('ab-scrollto'));
@@ -70,7 +70,7 @@ ScrollTo.prototype = {
 
   /**
    * Get the target element from href
-   * @param  {object} el Link triggered
+   * @param  {object} el - Link triggered
    */
   getAnchor: function(el) {
     console.log(typeof el);
@@ -88,7 +88,7 @@ ScrollTo.prototype = {
 
   /**
    * Scroll to that element
-   * @param  {object} $target scroll to that element target
+   * @param  {object} $target - scroll to that element target
    */
   scroll: function($target) {
     var that = this;

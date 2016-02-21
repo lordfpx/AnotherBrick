@@ -1,61 +1,98 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 "use strict";
 
-window.AB = {
-  name:           "AB - Another Brick on the web",
-  description:    "Plugins collection to solve everyday problems in web sites development",
-  version:        "0.1.0",
-  author:         "Thierry Philippe - www.thierryphilippe.fr",
+/**
+ * # AB - Another Brick
+ * When creating a website, we always face the same problems such as load assets depending on mediaqueries, equalize element's height, etc. AB is there to help you deals with that.
+ * It's a plugins bundle with some code taken from Zurb Foundation (and adapted), others from me and other sources.
+ * The idea behind this project is to give you bricks of JavaScripts to solve usual design difficulties.
+ * @module AB
+*/
+window.AB = (function(){
+  var name = "AB - Another Brick on the web";
+  var description = "Plugins collection to solve everyday problems in web sites development";
+  var version = "0.1.0";
+  var author = "Thierry Philippe - www.thierryphilippe.fr";
 
-  about: function() {
-    console.log(this.name + ": " + this.description + " v" + this.version + " by " + this.author.name + " (" + this.author.email + ")");
-  },
+  return {
+    /**
+     * Display AB informations such as version, description, author
+     * @example
+     * AB.about();
+     */
+    about: function() {
+      console.log(name + ": " + description + " v" + version + " by " + author.name + " (" + author.email + ")");
+    },
 
-  // AB.reflow() when you add/remove new items on page (like ajax response)
-  reflow: function() {
-    // reinit from user's settings
-    var plugins = AB.userSettings;
+    /**
+     * Initialize AB
+     * @example
+     * // Initialize AB with default settings
+     * AB.init();
+     *
+     * // Initialize with personal settings (that's only an example)
+     * AB.init({
+     *   mediaQuery: {
+     *     small: "639px",
+     *     medium: "640px",
+     *     large: "1024px",
+     *     xlarge: "1200px",
+     *     xxlarge: "1440px"
+     *   },
+     *   equalizer: {},
+     *   scrollTo: {
+     *     duration: 1000
+     *   },
+     *   interchange: {}
+     * });
+    */
+    init: function(plugins){
+      // keep user's settings
+      AB.userSettings = plugins;
 
-    for (var plugin in plugins) {
-      if (plugin !== "mediaQuery") { // mediaQuery can't be reinit
+      // mandatory plugins
+      if (!plugins.hasOwnProperty('mediaQuery')) {
+        AB.mediaQuery();
+      }
+
+      // init add-ons
+      for (var plugin in plugins) {
         if (plugins.hasOwnProperty(plugin)) {
           AB[plugin](plugins[plugin]);
         }
       }
-    }
-  },
+    },
 
-  init: function(plugins){
-    // keep user's settings
-    AB.userSettings = plugins;
+    fn:             require('../js/AB-fn'),             // self initialized
+    easing:         require('../js/AB-easing'),         // self initialized
+    imagesLoaded:   require('../js/AB-imagesLoaded'),   // self initialized
+    deviceDetect:   require('../js/AB-deviceDetect'),   // self initialized
 
-    // mandatory plugins
-    if (!plugins.hasOwnProperty('mediaQuery')) {
-      AB.mediaQuery();
-    }
+    mediaQuery:     require('../js/AB-mediaQuery'),     // mandatory (initialized by core)
 
-    // init add-ons
-    for (var plugin in plugins) {
-      if (plugins.hasOwnProperty(plugin)) {
-        AB[plugin](plugins[plugin]);
+    equalizer:      require('../js/AB-equalizer'),      // user's choice
+    scrollTo:       require('../js/AB-scrollTo'),       // user's choice
+    interchange:    require('../js/AB-interchange'),     // user's choice
+
+    /**
+     * Reflow plugins when the DOM is changed (after an ajax response for ex.)
+     * @example
+     * AB.reflow();
+     */
+    reflow: function() {
+      // reinit from user's settings
+      var plugins = AB.userSettings;
+
+      for (var plugin in plugins) {
+        if (plugin !== "mediaQuery") { // mediaQuery can't be reinit
+          if (plugins.hasOwnProperty(plugin)) {
+            AB[plugin](plugins[plugin]);
+          }
+        }
       }
-    }
-
-
-  },
-
-  fn:             require('../js/AB-fn'),             // self initialized
-  easing:         require('../js/AB-easing'),         // self initialized
-  imagesLoaded:   require('../js/AB-imagesLoaded'),   // self initialized
-  deviceDetect:   require('../js/AB-deviceDetect'),   // self initialized
-
-  mediaQuery:     require('../js/AB-mediaQuery'),     // mandatory (initialized by core)
-
-  equalizer:      require('../js/AB-equalizer'),      // user's choice
-  scrollTo:       require('../js/AB-scrollTo'),       // user's choice
-  interchange:    require('../js/AB-interchange')     // user's choice
-};
-
+    },
+  };
+})();
 },{"../js/AB-deviceDetect":2,"../js/AB-easing":3,"../js/AB-equalizer":4,"../js/AB-fn":5,"../js/AB-imagesLoaded":6,"../js/AB-interchange":7,"../js/AB-mediaQuery":8,"../js/AB-scrollTo":9}],2:[function(require,module,exports){
 "use strict";
 
@@ -765,12 +802,12 @@ module.exports = mediaQuery;
 "use strict";
 
 /**
+ * Smooth scroll to anchor links or to the element specified in data-ab-scrollto attribute.
  * @class
- * Smooth scroll to anchor links or to the element specified in data-ab-scrollto attribute
- * @param {object} opt user options
- * @param {number} opt.duration=500 Duration of the scroll
- * @param {number} opt.offset=0 offset target (usefull when using a sticky navigation for ex.)
- * @param {string} opt.easing=swing {@link easing}
+ * @param {object=} opt - user options
+ * @param {number=} opt.duration=500 - Duration of the scroll
+ * @param {number=} opt.offset=0 - offset target (usefull when using a sticky navigation for ex.)
+ * @param {string=} opt.easing=swing - {@link easing}
  *
  * @example
  * AB.init({
@@ -780,9 +817,9 @@ module.exports = mediaQuery;
  * 		easing: 'swing'
  * 	}
  * })
- * 
+ *
  * <a href="#target">...</a>
- * or
+ * // or
  * <div data-ab-scrollto=".target">...</div>
  *
  */
@@ -823,7 +860,7 @@ ScrollTo.prototype = {
 
   /**
    * Get the target element from data-ab-scrollto
-   * @param  {object} $el Element triggered to get it's target
+   * @param  {object} $el - Element triggered to get it's target
    */
   getTarget: function($el) {
     var $target = $($el.data('ab-scrollto'));
@@ -834,7 +871,7 @@ ScrollTo.prototype = {
 
   /**
    * Get the target element from href
-   * @param  {object} el Link triggered
+   * @param  {object} el - Link triggered
    */
   getAnchor: function(el) {
     console.log(typeof el);
@@ -852,7 +889,7 @@ ScrollTo.prototype = {
 
   /**
    * Scroll to that element
-   * @param  {object} $target scroll to that element target
+   * @param  {object} $target - scroll to that element target
    */
   scroll: function($target) {
     var that = this;
