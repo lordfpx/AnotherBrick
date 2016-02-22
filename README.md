@@ -6,7 +6,10 @@
 It&#39;s a plugins bundle with some code taken from Zurb Foundation (and adapted), others from me and other sources.
 The idea behind this project is to give you bricks of JavaScripts to solve usual design difficulties.</p>
 </dd>
-<dt><a href="#module_AB/scrollTo">AB/scrollTo</a></dt>
+<dt><a href="#module_AB-equalizer">AB-equalizer</a></dt>
+<dd><p>This plugin will allow you to equalize elements with data-ab-equalize. All elements with the same value will be equalized.</p>
+</dd>
+<dt><a href="#module_AB-scrollTo">AB-scrollTo</a></dt>
 <dd><p>Smooth scroll to anchor links or to the element specified in data-ab-scrollto attribute.</p>
 </dd>
 </dl>
@@ -67,8 +70,30 @@ Reflow plugins when the DOM is changed (after an ajax response for ex.)
 ```js
 AB.reflow();
 ```
-<a name="module_AB/scrollTo"></a>
-## AB/scrollTo
+<a name="module_AB-equalizer"></a>
+## AB-equalizer
+This plugin will allow you to equalize elements with data-ab-equalize. All elements with the same value will be equalized.
+
+**Example**  
+```js
+AB.init({
+  equalizer: {}
+});
+
+// Usage
+<div data-ab-equalize="someID">
+  Lorem ipsum dolor sit amet,
+  consectetur adipisicing elit. Minima hic debitis ut consectetur.
+  Molestias quod dolore veniam, rem nostrum modi nulla a, et veritatis,
+  nobis quae error quidem illo ea.
+</div>
+
+<div data-ab-equalize="someID">
+  Lorem
+</div>
+```
+<a name="module_AB-scrollTo"></a>
+## AB-scrollTo
 Smooth scroll to anchor links or to the element specified in data-ab-scrollto attribute.
 
 
@@ -87,8 +112,9 @@ AB.init({
 		offset: 0,
 		easing: 'swing'
 	}
-})
+});
 
+// Usage
 <a href="#target">...</a>
 // or
 <div data-ab-scrollto=".target">...</div>
