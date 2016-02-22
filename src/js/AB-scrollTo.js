@@ -1,8 +1,9 @@
 "use strict";
 
 /**
+ * @module AB/scrollTo
+ * @desc
  * Smooth scroll to anchor links or to the element specified in data-ab-scrollto attribute.
- * @class
  * @param {object=} opt - user options
  * @param {number=} opt.duration=500 - Duration of the scroll
  * @param {number=} opt.offset=0 - offset target (usefull when using a sticky navigation for ex.)
@@ -20,7 +21,6 @@
  * <a href="#target">...</a>
  * // or
  * <div data-ab-scrollto=".target">...</div>
- *
  */
 function ScrollTo(opt) {
   if (!(this instanceof ScrollTo)) {
@@ -57,10 +57,7 @@ ScrollTo.prototype = {
       });
   },
 
-  /**
-   * Get the target element from data-ab-scrollto
-   * @param  {object} $el - Element triggered to get it's target
-   */
+  // Get the target element from data-ab-scrollto
   getTarget: function($el) {
     var $target = $($el.data('ab-scrollto'));
     if ($target.length) {
@@ -68,10 +65,7 @@ ScrollTo.prototype = {
     }
   },
 
-  /**
-   * Get the target element from href
-   * @param  {object} el - Link triggered
-   */
+  // Get the target element from href
   getAnchor: function(el) {
     console.log(typeof el);
     var location = window.location;
@@ -86,10 +80,7 @@ ScrollTo.prototype = {
     }
   },
 
-  /**
-   * Scroll to that element
-   * @param  {object} $target - scroll to that element target
-   */
+  // Scroll to that element
   scroll: function($target) {
     var that = this;
 

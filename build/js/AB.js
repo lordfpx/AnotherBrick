@@ -2,11 +2,11 @@
 "use strict";
 
 /**
- * # AB - Another Brick
+ * @module AB
+ * @desc
  * When creating a website, we always face the same problems such as load assets depending on mediaqueries, equalize element's height, etc. AB is there to help you deals with that.
  * It's a plugins bundle with some code taken from Zurb Foundation (and adapted), others from me and other sources.
  * The idea behind this project is to give you bricks of JavaScripts to solve usual design difficulties.
- * @module AB
 */
 window.AB = (function(){
   var name = "AB - Another Brick on the web";
@@ -16,7 +16,8 @@ window.AB = (function(){
 
   return {
     /**
-     * Display AB informations such as version, description, author
+     * @static
+     * @desc Display AB informations in the browser console
      * @example
      * AB.about();
      */
@@ -25,7 +26,8 @@ window.AB = (function(){
     },
 
     /**
-     * Initialize AB
+     * @static
+     * @desc Initialize AB
      * @example
      * // Initialize AB with default settings
      * AB.init();
@@ -75,7 +77,8 @@ window.AB = (function(){
     interchange:    require('../js/AB-interchange'),     // user's choice
 
     /**
-     * Reflow plugins when the DOM is changed (after an ajax response for ex.)
+     * @static
+     * @desc Reflow plugins when the DOM is changed (after an ajax response for ex.)
      * @example
      * AB.reflow();
      */
@@ -802,8 +805,9 @@ module.exports = mediaQuery;
 "use strict";
 
 /**
+ * @module AB/scrollTo
+ * @desc
  * Smooth scroll to anchor links or to the element specified in data-ab-scrollto attribute.
- * @class
  * @param {object=} opt - user options
  * @param {number=} opt.duration=500 - Duration of the scroll
  * @param {number=} opt.offset=0 - offset target (usefull when using a sticky navigation for ex.)
@@ -821,7 +825,6 @@ module.exports = mediaQuery;
  * <a href="#target">...</a>
  * // or
  * <div data-ab-scrollto=".target">...</div>
- *
  */
 function ScrollTo(opt) {
   if (!(this instanceof ScrollTo)) {
@@ -858,10 +861,7 @@ ScrollTo.prototype = {
       });
   },
 
-  /**
-   * Get the target element from data-ab-scrollto
-   * @param  {object} $el - Element triggered to get it's target
-   */
+  // Get the target element from data-ab-scrollto
   getTarget: function($el) {
     var $target = $($el.data('ab-scrollto'));
     if ($target.length) {
@@ -869,10 +869,7 @@ ScrollTo.prototype = {
     }
   },
 
-  /**
-   * Get the target element from href
-   * @param  {object} el - Link triggered
-   */
+  // Get the target element from href
   getAnchor: function(el) {
     console.log(typeof el);
     var location = window.location;
@@ -887,10 +884,7 @@ ScrollTo.prototype = {
     }
   },
 
-  /**
-   * Scroll to that element
-   * @param  {object} $target - scroll to that element target
-   */
+  // Scroll to that element
   scroll: function($target) {
     var that = this;
 

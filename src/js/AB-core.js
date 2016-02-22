@@ -1,11 +1,11 @@
 "use strict";
 
 /**
- * # AB - Another Brick
+ * @module AB
+ * @desc
  * When creating a website, we always face the same problems such as load assets depending on mediaqueries, equalize element's height, etc. AB is there to help you deals with that.
  * It's a plugins bundle with some code taken from Zurb Foundation (and adapted), others from me and other sources.
  * The idea behind this project is to give you bricks of JavaScripts to solve usual design difficulties.
- * @module AB
 */
 window.AB = (function(){
   var name = "AB - Another Brick on the web";
@@ -15,7 +15,8 @@ window.AB = (function(){
 
   return {
     /**
-     * Display AB informations such as version, description, author
+     * @static
+     * @desc Display AB informations in the browser console
      * @example
      * AB.about();
      */
@@ -24,7 +25,8 @@ window.AB = (function(){
     },
 
     /**
-     * Initialize AB
+     * @static
+     * @desc Initialize AB
      * @example
      * // Initialize AB with default settings
      * AB.init();
@@ -74,7 +76,8 @@ window.AB = (function(){
     interchange:    require('../js/AB-interchange'),     // user's choice
 
     /**
-     * Reflow plugins when the DOM is changed (after an ajax response for ex.)
+     * @static
+     * @desc Reflow plugins when the DOM is changed (after an ajax response for ex.)
      * @example
      * AB.reflow();
      */
