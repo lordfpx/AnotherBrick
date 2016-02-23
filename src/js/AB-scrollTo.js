@@ -1,13 +1,13 @@
 "use strict";
 
 /**
- * @module AB-scrollTo
+ * @module AB-scrollTo()
  * @desc
  * Smooth scroll to anchor links or to the element specified in data-ab-scrollto attribute.
- * @param {object=} opt - user options
- * @param {number=} opt.duration=500 - Duration of the scroll
- * @param {number=} opt.offset=0 - offset target (usefull when using a sticky navigation for ex.)
- * @param {string=} opt.easing=swing - {@link easing}
+ * @param {object=} options - user options
+ * @param {number=} options.duration=500 - Duration of the scroll
+ * @param {number=} options.offset=0 - offset target (usefull when using a sticky navigation for ex.)
+ * @param {string=} options.easing=swing - {@link easing}
  *
  * @example
  * AB.init({

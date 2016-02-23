@@ -338,7 +338,7 @@ function uniqueElByAttributeValue($elArray, attribute) {
 
 
 /**
- * @module AB-equalizer
+ * @module AB-equalizer()
  * @desc
  * This plugin will allow you to equalize elements with data-ab-equalize. All elements with the same value will be equalized.
  *
@@ -640,34 +640,33 @@ module.exports = interchange;
 },{}],8:[function(require,module,exports){
 "use strict";
 
-/*
-Heavily inspired by https://github.com/zurb/foundation-sites
-
-Get current breakpoint:
-----------------------
-AB.mediaQuery.current;
-=> return current breakpoint (small, medium, large, xlarge, xxlarge)
-
-Match specific breakpoint:
--------------------------
-AB.mediaQuery.atLeast('small');
-=> return true or false
-
-Listener on breakpoint change:
------------------------------
-$(window).on('changed.mediaquery', function(e, newSize, current) {
-  console.log(newSize, current);
-});
-
-List queries object:
--------------------
-AB.mediaQuery.getQueries();
-
-Return real media-query from breakpoint name:
---------------------------------------------
-AB.mediaQuery.get('small');
-*/
-
+/**
+ * @module AB-mediaQuery()
+ * @desc
+ * That's the JavaScript side of Media Queries. That propose you some very usefull methodes to condition your scripts
+ * Heavily inspired by {@link https://github.com/zurb/foundation-sites}
+ * @example
+ * // Get current breakpoint:
+ * AB.mediaQuery.current;
+ * // => return current breakpoint (small, medium, large, xlarge, xxlarge)
+ *
+ * // Match specific breakpoint:
+ * AB.mediaQuery.atLeast('small');
+ * // => return true or false
+ *
+ * // Listener on breakpoint change:
+ * $(window).on('changed.ab-mediaquery', function(e, newSize, current) {
+ *  console.log(newSize, current);
+ * });
+ * // => will display something like: small large
+ *
+ * // List queries object:
+ * AB.mediaQuery.getQueries();
+ *
+ * // Return real media-query from breakpoint name:
+ * AB.mediaQuery.get('small');
+ * // => return something like "only screen and (max-width: 639px)"
+ */
 var MediaQuery = function(opt) {
   if (!(this instanceof MediaQuery)) {
     return new MediaQuery(opt);
@@ -822,13 +821,13 @@ module.exports = mediaQuery;
 "use strict";
 
 /**
- * @module AB-scrollTo
+ * @module AB-scrollTo()
  * @desc
  * Smooth scroll to anchor links or to the element specified in data-ab-scrollto attribute.
- * @param {object=} opt - user options
- * @param {number=} opt.duration=500 - Duration of the scroll
- * @param {number=} opt.offset=0 - offset target (usefull when using a sticky navigation for ex.)
- * @param {string=} opt.easing=swing - {@link easing}
+ * @param {object=} options - user options
+ * @param {number=} options.duration=500 - Duration of the scroll
+ * @param {number=} options.offset=0 - offset target (usefull when using a sticky navigation for ex.)
+ * @param {string=} options.easing=swing - {@link easing}
  *
  * @example
  * AB.init({

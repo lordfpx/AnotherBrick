@@ -6,10 +6,14 @@
 It&#39;s a plugins bundle with some code taken from Zurb Foundation (and adapted), others from me and other sources.
 The idea behind this project is to give you bricks of JavaScripts to solve usual design difficulties.</p>
 </dd>
-<dt><a href="#module_AB-equalizer">AB-equalizer</a></dt>
+<dt><a href="#module_AB-equalizer_new">AB-equalizer()</a></dt>
 <dd><p>This plugin will allow you to equalize elements with data-ab-equalize. All elements with the same value will be equalized.</p>
 </dd>
-<dt><a href="#module_AB-scrollTo">AB-scrollTo</a></dt>
+<dt><a href="#module_AB-mediaQuery_new">AB-mediaQuery()</a></dt>
+<dd><p>That&#39;s the JavaScript side of Media Queries. That propose you some very usefull methodes to condition your scripts
+Heavily inspired by <a href="https://github.com/zurb/foundation-sites">https://github.com/zurb/foundation-sites</a></p>
+</dd>
+<dt><a href="#module_AB-scrollTo_new">AB-scrollTo()</a></dt>
 <dd><p>Smooth scroll to anchor links or to the element specified in data-ab-scrollto attribute.</p>
 </dd>
 </dl>
@@ -70,8 +74,8 @@ Reflow plugins when the DOM is changed (after an ajax response for ex.)
 ```js
 AB.reflow();
 ```
-<a name="module_AB-equalizer"></a>
-## AB-equalizer
+<a name="module_AB-equalizer_new"></a>
+## AB-equalizer()
 This plugin will allow you to equalize elements with data-ab-equalize. All elements with the same value will be equalized.
 
 **Example**  
@@ -92,17 +96,45 @@ AB.init({
   Lorem
 </div>
 ```
-<a name="module_AB-scrollTo"></a>
-## AB-scrollTo
+<a name="module_AB-mediaQuery_new"></a>
+## AB-mediaQuery()
+That's the JavaScript side of Media Queries. That propose you some very usefull methodes to condition your scripts
+Heavily inspired by [https://github.com/zurb/foundation-sites](https://github.com/zurb/foundation-sites)
+
+**Example**  
+```js
+// Get current breakpoint:
+AB.mediaQuery.current;
+// => return current breakpoint (small, medium, large, xlarge, xxlarge)
+
+// Match specific breakpoint:
+AB.mediaQuery.atLeast('small');
+// => return true or false
+
+// Listener on breakpoint change:
+$(window).on('changed.ab-mediaquery', function(e, newSize, current) {
+ console.log(newSize, current);
+});
+// => will display something like: small large
+
+// List queries object:
+AB.mediaQuery.getQueries();
+
+// Return real media-query from breakpoint name:
+AB.mediaQuery.get('small');
+// => return something like "only screen and (max-width: 639px)"
+```
+<a name="module_AB-scrollTo_new"></a>
+## AB-scrollTo()
 Smooth scroll to anchor links or to the element specified in data-ab-scrollto attribute.
 
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
-| [opt] | <code>object</code> |  | user options |
-| [opt.duration] | <code>number</code> | <code>500</code> | Duration of the scroll |
-| [opt.offset] | <code>number</code> | <code>0</code> | offset target (usefull when using a sticky navigation for ex.) |
-| [opt.easing] | <code>string</code> | <code>&quot;swing&quot;</code> | [easing](easing) |
+| [options] | <code>object</code> |  | user options |
+| [options.duration] | <code>number</code> | <code>500</code> | Duration of the scroll |
+| [options.offset] | <code>number</code> | <code>0</code> | offset target (usefull when using a sticky navigation for ex.) |
+| [options.easing] | <code>string</code> | <code>&quot;swing&quot;</code> | [easing](easing) |
 
 **Example**  
 ```js
