@@ -1,10 +1,11 @@
 "use strict";
 
 /**
- * @module AB-mediaQuery()
+ * @module AB-mediaQuery
  * @desc
  * That's the JavaScript side of Media Queries. That propose you some very usefull methodes to condition your scripts
  * Heavily inspired by {@link https://github.com/zurb/foundation-sites}
+ *
  * @example
  * // Get current breakpoint:
  * AB.mediaQuery.current;

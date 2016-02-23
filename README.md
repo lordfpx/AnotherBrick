@@ -6,14 +6,14 @@
 It&#39;s a plugins bundle with some code taken from Zurb Foundation (and adapted), others from me and other sources.
 The idea behind this project is to give you bricks of JavaScripts to solve usual design difficulties.</p>
 </dd>
-<dt><a href="#module_AB-equalizer_new">AB-equalizer()</a></dt>
+<dt><a href="#module_AB-equalizer">AB-equalizer</a></dt>
 <dd><p>This plugin will allow you to equalize elements with data-ab-equalize. All elements with the same value will be equalized.</p>
 </dd>
-<dt><a href="#module_AB-mediaQuery_new">AB-mediaQuery()</a></dt>
+<dt><a href="#module_AB-mediaQuery">AB-mediaQuery</a></dt>
 <dd><p>That&#39;s the JavaScript side of Media Queries. That propose you some very usefull methodes to condition your scripts
 Heavily inspired by <a href="https://github.com/zurb/foundation-sites">https://github.com/zurb/foundation-sites</a></p>
 </dd>
-<dt><a href="#module_AB-scrollTo_new">AB-scrollTo()</a></dt>
+<dt><a href="#module_AB-scrollTo">AB-scrollTo</a></dt>
 <dd><p>Smooth scroll to anchor links or to the element specified in data-ab-scrollto attribute.</p>
 </dd>
 </dl>
@@ -74,8 +74,8 @@ Reflow plugins when the DOM is changed (after an ajax response for ex.)
 ```js
 AB.reflow();
 ```
-<a name="module_AB-equalizer_new"></a>
-## AB-equalizer()
+<a name="module_AB-equalizer"></a>
+## AB-equalizer
 This plugin will allow you to equalize elements with data-ab-equalize. All elements with the same value will be equalized.
 
 **Example**  
@@ -96,8 +96,8 @@ AB.init({
   Lorem
 </div>
 ```
-<a name="module_AB-mediaQuery_new"></a>
-## AB-mediaQuery()
+<a name="module_AB-mediaQuery"></a>
+## AB-mediaQuery
 That's the JavaScript side of Media Queries. That propose you some very usefull methodes to condition your scripts
 Heavily inspired by [https://github.com/zurb/foundation-sites](https://github.com/zurb/foundation-sites)
 
@@ -124,8 +124,8 @@ AB.mediaQuery.getQueries();
 AB.mediaQuery.get('small');
 // => return something like "only screen and (max-width: 639px)"
 ```
-<a name="module_AB-scrollTo_new"></a>
-## AB-scrollTo()
+<a name="module_AB-scrollTo"></a>
+## AB-scrollTo
 Smooth scroll to anchor links or to the element specified in data-ab-scrollto attribute.
 
 

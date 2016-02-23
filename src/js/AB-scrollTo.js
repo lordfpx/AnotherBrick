@@ -1,7 +1,7 @@
 "use strict";
 
 /**
- * @module AB-scrollTo()
+ * @module AB-scrollTo
  * @desc
  * Smooth scroll to anchor links or to the element specified in data-ab-scrollto attribute.
  * @param {object=} options - user options

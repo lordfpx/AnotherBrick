@@ -20,7 +20,7 @@ function uniqueElByAttributeValue($elArray, attribute) {
 
 
 /**
- * @module AB-equalizer()
+ * @module AB-equalizer
  * @desc
  * This plugin will allow you to equalize elements with data-ab-equalize. All elements with the same value will be equalized.
  *

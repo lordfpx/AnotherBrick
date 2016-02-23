@@ -338,7 +338,7 @@ function uniqueElByAttributeValue($elArray, attribute) {
 
 
 /**
- * @module AB-equalizer()
+ * @module AB-equalizer
  * @desc
  * This plugin will allow you to equalize elements with data-ab-equalize. All elements with the same value will be equalized.
  *
@@ -641,10 +641,11 @@ module.exports = interchange;
 "use strict";
 
 /**
- * @module AB-mediaQuery()
+ * @module AB-mediaQuery
  * @desc
  * That's the JavaScript side of Media Queries. That propose you some very usefull methodes to condition your scripts
  * Heavily inspired by {@link https://github.com/zurb/foundation-sites}
+ *
  * @example
  * // Get current breakpoint:
  * AB.mediaQuery.current;
@@ -821,7 +822,7 @@ module.exports = mediaQuery;
 "use strict";
 
 /**
- * @module AB-scrollTo()
+ * @module AB-scrollTo
  * @desc
  * Smooth scroll to anchor links or to the element specified in data-ab-scrollto attribute.
  * @param {object=} options - user options
