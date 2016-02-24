@@ -515,13 +515,20 @@ module.exports = imagesLoaded;
 },{}],7:[function(require,module,exports){
 "use strict";
 
-/*
-Heavily inspired by https://github.com/zurb/foundation-sites
-
-
-*/
-
-
+/**
+ * @module AB-interchange
+ * @desc
+ * While responsive image loading is not really an easy task still today, here is a solution
+ * to manage conditional (based on breakpoints) loading of img, background-image or even HTML content with that plugin.
+ * Heavily inspired by {@link https://github.com/zurb/foundation-sites}
+ *
+ * @example
+ * // loading of img source:
+ * <img src="" data-ab-interchange="[img/cat-1x.jpg, small], [img/cat-2x.jpg, medium], [img/cat-3x.jpg, large]">
+ *
+ * // background-image:
+ * <div data-ab-interchange="[img/cat-1x.jpg, small], [img/cat-2x.jpg, medium], [img/cat-3x.jpg, large]"></div>
+ */
 var Interchange = function(element, opt) {
   if (!(this instanceof Interchange)) {
     return new Interchange(element, opt);

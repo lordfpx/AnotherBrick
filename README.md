@@ -9,6 +9,11 @@ The idea behind this project is to give you bricks of JavaScripts to solve usual
 <dt><a href="#module_AB-equalizer">AB-equalizer</a></dt>
 <dd><p>This plugin will allow you to equalize elements with data-ab-equalize. All elements with the same value will be equalized.</p>
 </dd>
+<dt><a href="#module_AB-interchange">AB-interchange</a></dt>
+<dd><p>While responsive image loading is not really an easy task still today, here is a solution
+to manage conditional (based on breakpoints) loading of img, background-image or even HTML content with that plugin.
+Heavily inspired by <a href="https://github.com/zurb/foundation-sites">https://github.com/zurb/foundation-sites</a></p>
+</dd>
 <dt><a href="#module_AB-mediaQuery">AB-mediaQuery</a></dt>
 <dd><p>That&#39;s the JavaScript side of Media Queries. That propose you some very usefull methodes to condition your scripts
 Heavily inspired by <a href="https://github.com/zurb/foundation-sites">https://github.com/zurb/foundation-sites</a></p>
@@ -95,6 +100,20 @@ AB.init({
 <div data-ab-equalize="someID">
   Lorem
 </div>
+```
+<a name="module_AB-interchange"></a>
+## AB-interchange
+While responsive image loading is not really an easy task still today, here is a solution
+to manage conditional (based on breakpoints) loading of img, background-image or even HTML content with that plugin.
+Heavily inspired by [https://github.com/zurb/foundation-sites](https://github.com/zurb/foundation-sites)
+
+**Example**  
+```js
+// loading of img source:
+<img src="" data-ab-interchange="[img/cat-1x.jpg, small], [img/cat-2x.jpg, medium], [img/cat-3x.jpg, large]">
+
+// background-image:
+<div data-ab-interchange="[img/cat-1x.jpg, small], [img/cat-2x.jpg, medium], [img/cat-3x.jpg, large]"></div>
 ```
 <a name="module_AB-mediaQuery"></a>
 ## AB-mediaQuery
