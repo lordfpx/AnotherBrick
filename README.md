@@ -9,6 +9,11 @@ The idea behind this project is to give you bricks of JavaScripts to solve usual
 <dt><a href="#module_AB-equalizer">AB-equalizer</a></dt>
 <dd><p>This plugin will allow you to equalize elements with data-ab-equalize. All elements with the same value will be equalized.</p>
 </dd>
+<dt><a href="#module_AB-imagesLoaded">AB-imagesLoaded</a></dt>
+<dd><p>You can run a callback when images inside of an element are loaded.
+That can be useful after ajax response.
+Heavily inspired by <a href="https://github.com/zurb/foundation-sites">https://github.com/zurb/foundation-sites</a></p>
+</dd>
 <dt><a href="#module_AB-interchange">AB-interchange</a></dt>
 <dd><p>While responsive image loading is not really an easy task still today, here is a solution
 to manage conditional (based on breakpoints) loading of img, background-image or even HTML content with that plugin.
@@ -100,6 +105,19 @@ AB.init({
 <div data-ab-equalize="someID">
   Lorem
 </div>
+```
+<a name="module_AB-imagesLoaded"></a>
+## AB-imagesLoaded
+You can run a callback when images inside of an element are loaded.
+That can be useful after ajax response.
+Heavily inspired by [https://github.com/zurb/foundation-sites](https://github.com/zurb/foundation-sites)
+
+**Example**  
+```js
+var imagesLoadedCallback = function() {
+  console.log('imagesLoadedCallback: Images loaded');
+};
+AB.imagesLoaded( $('.some-element-wrapper'), imagesLoadedCallback );
 ```
 <a name="module_AB-interchange"></a>
 ## AB-interchange
