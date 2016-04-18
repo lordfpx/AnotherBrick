@@ -29,6 +29,7 @@ Heavily inspired by <a href="https://github.com/zurb/foundation-sites">https://g
 </dl>
 
 <a name="module_AB"></a>
+
 ## AB
 When creating a website, we always face the same problems such as load assets depending on mediaqueries, equalize element's height, etc. AB is there to help you deals with that.
 It's a plugins bundle with some code taken from Zurb Foundation (and adapted), others from me and other sources.
@@ -41,6 +42,7 @@ The idea behind this project is to give you bricks of JavaScripts to solve usual
     * [.reflow()](#module_AB.reflow)
 
 <a name="module_AB.about"></a>
+
 ### AB.about()
 Display AB informations in the browser console
 
@@ -50,6 +52,7 @@ Display AB informations in the browser console
 AB.about();
 ```
 <a name="module_AB.init"></a>
+
 ### AB.init()
 Initialize AB
 
@@ -76,6 +79,7 @@ AB.init({
 });
 ```
 <a name="module_AB.reflow"></a>
+
 ### AB.reflow()
 Reflow plugins when the DOM is changed (after an ajax response for ex.)
 
@@ -85,6 +89,7 @@ Reflow plugins when the DOM is changed (after an ajax response for ex.)
 AB.reflow();
 ```
 <a name="module_AB-equalizer"></a>
+
 ## AB-equalizer
 This plugin will allow you to equalize elements with data-ab-equalize. All elements with the same value will be equalized.
 
@@ -107,6 +112,7 @@ AB.init({
 </div>
 ```
 <a name="module_AB-imagesLoaded"></a>
+
 ## AB-imagesLoaded
 You can run a callback when images inside of an element are loaded.
 That can be useful after ajax response.
@@ -120,6 +126,7 @@ var imagesLoadedCallback = function() {
 AB.imagesLoaded( $('.some-element-wrapper'), imagesLoadedCallback );
 ```
 <a name="module_AB-interchange"></a>
+
 ## AB-interchange
 While responsive image loading is not really an easy task still today, here is a solution
 to manage conditional (based on breakpoints) loading of img, background-image or even HTML content with that plugin.
@@ -134,6 +141,7 @@ Heavily inspired by [https://github.com/zurb/foundation-sites](https://github.co
 <div data-ab-interchange="[img/cat-1x.jpg, small], [img/cat-2x.jpg, medium], [img/cat-3x.jpg, large]"></div>
 ```
 <a name="module_AB-mediaQuery"></a>
+
 ## AB-mediaQuery
 That's the JavaScript side of Media Queries. That propose you some very usefull methodes to condition your scripts
 Heavily inspired by [https://github.com/zurb/foundation-sites](https://github.com/zurb/foundation-sites)
@@ -162,6 +170,7 @@ AB.mediaQuery.get('small');
 // => return something like "only screen and (max-width: 639px)"
 ```
 <a name="module_AB-scrollTo"></a>
+
 ## AB-scrollTo
 Smooth scroll to anchor links or to the element specified in data-ab-scrollto attribute.
 
