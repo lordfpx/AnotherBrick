@@ -1,33 +1,33 @@
 "use strict";
 
-/*
-Heavily inspired by https://github.com/zurb/foundation-sites
-
-Get current breakpoint:
-----------------------
-AB.mediaQuery.current;
-=> return current breakpoint (small, medium, large, xlarge, xxlarge)
-
-Match specific breakpoint:
--------------------------
-AB.mediaQuery.atLeast('small');
-=> return true or false
-
-Listener on breakpoint change:
------------------------------
-$(window).on('changed.mediaquery', function(e, newSize, current) {
-  console.log(newSize, current);
-});
-
-List queries object:
--------------------
-AB.mediaQuery.getQueries();
-
-Return real media-query from breakpoint name:
---------------------------------------------
-AB.mediaQuery.get('small');
-*/
-
+/**
+ * @module AB-mediaQuery
+ * @desc
+ * That's the JavaScript side of Media Queries. That propose you some very usefull methodes to condition your scripts
+ * Heavily inspired by {@link https://github.com/zurb/foundation-sites}
+ *
+ * @example
+ * // Get current breakpoint:
+ * AB.mediaQuery.current;
+ * // => return current breakpoint (small, medium, large, xlarge, xxlarge)
+ *
+ * // Match specific breakpoint:
+ * AB.mediaQuery.atLeast('small');
+ * // => return true or false
+ *
+ * // Listener on breakpoint change:
+ * $(window).on('changed.ab-mediaquery', function(e, newSize, current) {
+ *  console.log(newSize, current);
+ * });
+ * // => will display something like: small large
+ *
+ * // List queries object:
+ * AB.mediaQuery.getQueries();
+ *
+ * // Return real media-query from breakpoint name:
+ * AB.mediaQuery.get('small');
+ * // => return something like "only screen and (max-width: 639px)"
+ */
 var MediaQuery = function(opt) {
   if (!(this instanceof MediaQuery)) {
     return new MediaQuery(opt);

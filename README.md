@@ -1,154 +1,199 @@
-# AB - Another Brick
+## Modules
+
+<dl>
+<dt><a href="#module_AB">AB</a></dt>
+<dd><p>When creating a website, we always face the same problems such as load assets depending on mediaqueries, equalize element&#39;s height, etc. AB is there to help you deals with that.
+It&#39;s a plugins bundle with some code taken from Zurb Foundation (and adapted), others from me and other sources.
+The idea behind this project is to give you bricks of JavaScripts to solve usual design difficulties.</p>
+</dd>
+<dt><a href="#module_AB-equalizer">AB-equalizer</a></dt>
+<dd><p>This plugin will allow you to equalize elements with data-ab-equalize. All elements with the same value will be equalized.</p>
+</dd>
+<dt><a href="#module_AB-imagesLoaded">AB-imagesLoaded</a></dt>
+<dd><p>You can run a callback when images inside of an element are loaded.
+That can be useful after ajax response.
+Heavily inspired by <a href="https://github.com/zurb/foundation-sites">https://github.com/zurb/foundation-sites</a></p>
+</dd>
+<dt><a href="#module_AB-interchange">AB-interchange</a></dt>
+<dd><p>While responsive image loading is not really an easy task still today, here is a solution
+to manage conditional (based on breakpoints) loading of img, background-image or even HTML content with that plugin.
+Heavily inspired by <a href="https://github.com/zurb/foundation-sites">https://github.com/zurb/foundation-sites</a></p>
+</dd>
+<dt><a href="#module_AB-mediaQuery">AB-mediaQuery</a></dt>
+<dd><p>That&#39;s the JavaScript side of Media Queries. That propose you some very usefull methodes to condition your scripts
+Heavily inspired by <a href="https://github.com/zurb/foundation-sites">https://github.com/zurb/foundation-sites</a></p>
+</dd>
+<dt><a href="#module_AB-scrollTo">AB-scrollTo</a></dt>
+<dd><p>Smooth scroll to anchor links or to the element specified in data-ab-scrollto attribute.</p>
+</dd>
+</dl>
+
+<a name="module_AB"></a>
+
+## AB
 When creating a website, we always face the same problems such as load assets depending on mediaqueries, equalize element's height, etc. AB is there to help you deals with that.
 It's a plugins bundle with some code taken from Zurb Foundation (and adapted), others from me and other sources.
 The idea behind this project is to give you bricks of JavaScripts to solve usual design difficulties.
 
 
-## Basic usage
-AB depend on jQuery. You need to load it first, then AB.js.
-AB is directly executed and give you access to its methods.
+* [AB](#module_AB)
+    * [.about()](#module_AB.about)
+    * [.init()](#module_AB.init)
+    * [.reflow()](#module_AB.reflow)
 
-Some plugins are optional and can be initialized that way:
+<a name="module_AB.about"></a>
 
+### AB.about()
+Display AB informations in the browser console
+
+**Kind**: static method of <code>[AB](#module_AB)</code>  
+**Example**  
+```js
+AB.about();
 ```
-AB.init({
-  // equalizer: no specific options
-  equalizer: {},
+<a name="module_AB.init"></a>
 
-  /* scrollTo:
-  options:
-  - duration: 500,
-  - offset: 0, (scroll before or after the target, usefull when using sticky navigation)
-  - easing: 'easeOutQuad' (check AB.easing opbject in browser console for all available easings)
-  */
+### AB.init()
+Initialize AB
+
+**Kind**: static method of <code>[AB](#module_AB)</code>  
+**Example**  
+```js
+// Initialize AB with default settings
+AB.init();
+
+// Initialize with personal settings (that's only an example)
+AB.init({
+  mediaQuery: {
+    small: "639px",
+    medium: "640px",
+    large: "1024px",
+    xlarge: "1200px",
+    xxlarge: "1440px"
+  },
+  equalizer: {},
   scrollTo: {
     duration: 1000
   },
-
-  // interchange: no specific options
   interchange: {}
 });
 ```
+<a name="module_AB.reflow"></a>
 
-Check "example-usage.js" for usage and open index.html to inspect, test and look in the browser console.
+### AB.reflow()
+Reflow plugins when the DOM is changed (after an ajax response for ex.)
 
-* ### AB-fn
-    It's a pack of utilities functions. By now, it's quite limited:
-    * AB.fn.isJson(string)
-      return true is a string can be parsed to JSON format to prevent famous Uncaught SyntaxError: Unexpected token ;-)
+**Kind**: static method of <code>[AB](#module_AB)</code>  
+**Example**  
+```js
+AB.reflow();
+```
+<a name="module_AB-equalizer"></a>
 
+## AB-equalizer
+This plugin will allow you to equalize elements with data-ab-equalize. All elements with the same value will be equalized.
 
-* ### AB-easing
-    (From https://github.com/danro/jquery-easing/blob/master/jquery.easing.js)
-    Lots of well known easing collection of functions.
+**Example**  
+```js
+AB.init({
+  equalizer: {}
+});
 
+// Usage
+<div data-ab-equalize="someID">
+  Lorem ipsum dolor sit amet,
+  consectetur adipisicing elit. Minima hic debitis ut consectetur.
+  Molestias quod dolore veniam, rem nostrum modi nulla a, et veritatis,
+  nobis quae error quidem illo ea.
+</div>
 
-* ### AB-mediaQuery
-    (Inspired a lot from http://foundation.zurb.com/)
-    First, you need to prepare your SCSS by editing and importing "AB-settings" in your scss. CSS and JS breakpoints will be shared It's VERY important to use same values defined in AB-settings.scss and your own breakpoints!
+<div data-ab-equalize="someID">
+  Lorem
+</div>
+```
+<a name="module_AB-imagesLoaded"></a>
 
-    #### SCSS preparation and usage
-      Add `@import "AB-settings";` at the top of your main SCSS file, then you can define your breakpoints variables with the unit you want.
+## AB-imagesLoaded
+You can run a callback when images inside of an element are loaded.
+That can be useful after ajax response.
+Heavily inspired by [https://github.com/zurb/foundation-sites](https://github.com/zurb/foundation-sites)
 
-      You can then use in your SCSS files like that (instead of creating duplicate variables on your side):
-        ```
-        @media #{$medium-up} {
-          // here comes styles for medium and up breakpoints
-        }
-        ```
-      ... but you can still use your preferred scss framework indeed assuming you are using same breakpoints values again.
+**Example**  
+```js
+var imagesLoadedCallback = function() {
+  console.log('imagesLoadedCallback: Images loaded');
+};
+AB.imagesLoaded( $('.some-element-wrapper'), imagesLoadedCallback );
+```
+<a name="module_AB-interchange"></a>
 
-    #### JS usage
-      * Get current breakpoint:
-      ```
-      AB.mediaQuery.current;
-      ```
-      => return current breakpoint (small, medium, large, xlarge, xxlarge)
+## AB-interchange
+While responsive image loading is not really an easy task still today, here is a solution
+to manage conditional (based on breakpoints) loading of img, background-image or even HTML content with that plugin.
+Heavily inspired by [https://github.com/zurb/foundation-sites](https://github.com/zurb/foundation-sites)
 
-      * Match specific breakpoint:
-      ```
-      AB.mediaQuery.atLeast('small');
-      ```
-      => return true or false
+**Example**  
+```js
+// loading of img source:
+<img src="" data-ab-interchange="[img/cat-1x.jpg, small], [img/cat-2x.jpg, medium], [img/cat-3x.jpg, large]">
 
-      * Listener on breakpoint change
-      ```
-      $(window).on('changed.ab-mediaquery', function(e, newSize, current) {
-        console.log(newSize, current);
-      });
-      ```
+// background-image:
+<div data-ab-interchange="[img/cat-1x.jpg, small], [img/cat-2x.jpg, medium], [img/cat-3x.jpg, large]"></div>
+```
+<a name="module_AB-mediaQuery"></a>
 
-      * List queries object
-      ```
-      AB.mediaQuery.getQueries();
-      ```
+## AB-mediaQuery
+That's the JavaScript side of Media Queries. That propose you some very usefull methodes to condition your scripts
+Heavily inspired by [https://github.com/zurb/foundation-sites](https://github.com/zurb/foundation-sites)
 
-      * Return real media-query from breakpoint name
-      ```
-      AB.mediaQuery.get('small');
-      ```
+**Example**  
+```js
+// Get current breakpoint:
+AB.mediaQuery.current;
+// => return current breakpoint (small, medium, large, xlarge, xxlarge)
 
+// Match specific breakpoint:
+AB.mediaQuery.atLeast('small');
+// => return true or false
 
-* ### AB.equalizer
-    This plugin will allow you to equalize elements with data-ab-equalize. All elements with the same value will be equalized.
+// Listener on breakpoint change:
+$(window).on('changed.ab-mediaquery', function(e, newSize, current) {
+ console.log(newSize, current);
+});
+// => will display something like: small large
 
-    ```
-    <div data-ab-equalize="someID">
-      Lorem ipsum dolor sit amet,
-      consectetur adipisicing elit. Minima hic debitis ut consectetur.
-      Molestias quod dolore veniam, rem nostrum modi nulla a, et veritatis,
-      nobis quae error quidem illo ea.
-    </div>
+// List queries object:
+AB.mediaQuery.getQueries();
 
-    <div data-ab-equalize="someID">
-      Lorem
-    </div>
-    ```
+// Return real media-query from breakpoint name:
+AB.mediaQuery.get('small');
+// => return something like "only screen and (max-width: 639px)"
+```
+<a name="module_AB-scrollTo"></a>
 
-
-* ### AB.deviceDetect
-    (inspired by unknown sources)
-    That allow you to test mobile browser and OS:
-    ```
-    AB.deviceDetect.get('browser', 'Android');
-    ```
-    => return true or false
-
-    ```
-    AB.deviceDetect.isTouch();
-    ```
-    => return true on touch devices
-
-    Look at that object to see possible browser test :
-    ```
-    AB.deviceDetect.browser
-    ```
-
-    Look at that object to see possible OS test:
-    ```
-    AB.deviceDetect.OS
-    ```
+## AB-scrollTo
+Smooth scroll to anchor links or to the element specified in data-ab-scrollto attribute.
 
 
-* ### AB.imagesLoaded
-    (from http://foundation.zurb.com/)
-    Run callback when images are loaded.
-    Can be useful after ajax response: call it onSuccess with correct selector of course
-    ```
-    var imagesLoadedCallback = function() {
-      console.log('imagesLoadedCallback: Images loaded');
-    };
-    AB.imagesLoaded( $('.some-element'), imagesLoadedCallback );
-    ```
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| [options] | <code>object</code> |  | user options |
+| [options.duration] | <code>number</code> | <code>500</code> | Duration of the scroll |
+| [options.offset] | <code>number</code> | <code>0</code> | offset target (usefull when using a sticky navigation for ex.) |
+| [options.easing] | <code>string</code> | <code>&quot;swing&quot;</code> | [easing](easing) |
 
-* ### AB.scrollTo
-    Smooth scroll to link anchors or to the element specified in data-ab-scrollto attribute
-    ```
-    AB.scrollTo = new AB.scrollTo();
+**Example**  
+```js
+AB.init({
+	scrollTo: {
+		duration: 1000,
+		offset: 0,
+		easing: 'swing'
+	}
+});
 
-    AB.scrollTo = new AB.scrollTo({
-      duration: 1000,
-      offset: 0,
-      easing: 'swing'
-    });
-    ```
+// Usage
+<a href="#target">...</a>
+// or
+<div data-ab-scrollto=".target">...</div>
+```

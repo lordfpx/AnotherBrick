@@ -1,16 +1,18 @@
 "use strict";
 
-/*
-From https://github.com/zurb/foundation-sites
-
-USAGE:
-
-var callback = function() {
-  console.log('imagesLoadedCallback: Images loaded');
-};
-AB.imagesLoaded( $('img'), callback );
-
-*/
+/**
+ * @module AB-imagesLoaded
+ * @desc
+ * You can run a callback when images inside of an element are loaded.
+ * That can be useful after ajax response.
+ * Heavily inspired by {@link https://github.com/zurb/foundation-sites}
+ *
+ * @example
+ * var imagesLoadedCallback = function() {
+ *   console.log('imagesLoadedCallback: Images loaded');
+ * };
+ * AB.imagesLoaded( $('.some-element-wrapper'), imagesLoadedCallback );
+ */
 
 function imagesLoaded($wrapper, callback) {
   var $images = $wrapper.find('img'),

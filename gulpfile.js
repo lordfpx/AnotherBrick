@@ -15,6 +15,8 @@ var sass = require('gulp-sass');
 var del = require('del');
 var jshint = require('gulp-jshint');
 var stylish = require('jshint-stylish');
+var gulpJsdoc2md = require('gulp-jsdoc-to-markdown');
+var concat = require("gulp-concat");
 var message = gutil.env.message;
 
 var onError = function(err) {
@@ -106,6 +108,18 @@ gulp.task('copy:assets', function() {
 });
 
 
+// generate doc
+gulp.task("doc", function(){
+  return gulp.src('src/js/*.js')
+    .pipe(concat('README.md'))
+    .pipe(gulpJsdoc2md())
+    .on('error', function (err) {
+      gutil.log('jsdoc2md failed:', err.message);
+    })
+    .pipe(gulp.dest(''));
+});
+
+
 // browser sync server
 gulp.task('serve', function() {
   browserSync.init({
@@ -123,7 +137,7 @@ gulp.task('serve', function() {
     gulp.watch('src/views/**/*.jade', ['jade', 'copy:assets', browserSync.reload]);
     gulp.watch('src/scss/**/*.scss', ['sass', 'copy:scss']);
     gulp.watch('src/js/demo/*.js', ['copy:js', browserSync.reload]);
-    gulp.watch('build/js/*.js', ['lint']);
+    gulp.watch('build/js/*.js', ['lint', 'doc']);
   });
 });
 
@@ -137,5 +151,6 @@ gulp.task('build', gulpSequence(
 // GULP work task
 gulp.task('default', gulpSequence(
   'build',
+  'doc',
   'serve'
 ));

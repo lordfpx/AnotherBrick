@@ -1,18 +1,28 @@
 "use strict";
 
-/*
-USAGE
-
-AB.scrollTo = new AB.scrollTo();
-
-AB.scrollTo = new AB.scrollTo({
-  duration: 1000,
-  offset: 0,
-  easing: 'swing'
-});
-
-*/
-
+/**
+ * @module AB-scrollTo
+ * @desc
+ * Smooth scroll to anchor links or to the element specified in data-ab-scrollto attribute.
+ * @param {object=} options - user options
+ * @param {number=} options.duration=500 - Duration of the scroll
+ * @param {number=} options.offset=0 - offset target (usefull when using a sticky navigation for ex.)
+ * @param {string=} options.easing=swing - {@link easing}
+ *
+ * @example
+ * AB.init({
+ * 	scrollTo: {
+ * 		duration: 1000,
+ * 		offset: 0,
+ * 		easing: 'swing'
+ * 	}
+ * });
+ *
+ * // Usage
+ * <a href="#target">...</a>
+ * // or
+ * <div data-ab-scrollto=".target">...</div>
+ */
 function ScrollTo(opt) {
   if (!(this instanceof ScrollTo)) {
     return new ScrollTo(opt);
@@ -48,6 +58,7 @@ ScrollTo.prototype = {
       });
   },
 
+  // Get the target element from data-ab-scrollto
   getTarget: function($el) {
     var $target = $($el.data('ab-scrollto'));
     if ($target.length) {
@@ -55,7 +66,9 @@ ScrollTo.prototype = {
     }
   },
 
+  // Get the target element from href
   getAnchor: function(el) {
+    console.log(typeof el);
     var location = window.location;
 
     if (location.pathname.replace(/^\//, '') === el.pathname.replace(/^\//, '') && location.hostname === el.hostname) {
@@ -68,6 +81,7 @@ ScrollTo.prototype = {
     }
   },
 
+  // Scroll to that element
   scroll: function($target) {
     var that = this;
 
