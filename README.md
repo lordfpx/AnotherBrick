@@ -6,6 +6,11 @@
 It&#39;s a plugins bundle with some code taken from Zurb Foundation (and adapted), others from me and other sources.
 The idea behind this project is to give you bricks of JavaScripts to solve usual design difficulties.</p>
 </dd>
+<dt><a href="#module_AB-easing">AB-easing</a></dt>
+<dd><p>This is a collection of easing functions that can be used when
+Taken from <a href="https://github.com/danro/jquery-easing/blob/master/jquery.easing.js">https://github.com/danro/jquery-easing/blob/master/jquery.easing.js</a>
+You can use that in jQuery animations replacing &#39;easeInOutQuad&#39; by &#39;AB.easeInOutQuad&#39; for example or your own scripts</p>
+</dd>
 <dt><a href="#module_AB-equalizer">AB-equalizer</a></dt>
 <dd><p>This plugin will allow you to equalize elements with data-ab-equalize. All elements with the same value will be equalized.</p>
 </dd>
@@ -88,6 +93,13 @@ Reflow plugins when the DOM is changed (after an ajax response for ex.)
 ```js
 AB.reflow();
 ```
+<a name="module_AB-easing"></a>
+
+## AB-easing
+This is a collection of easing functions that can be used when
+Taken from [https://github.com/danro/jquery-easing/blob/master/jquery.easing.js](https://github.com/danro/jquery-easing/blob/master/jquery.easing.js)
+You can use that in jQuery animations replacing 'easeInOutQuad' by 'AB.easeInOutQuad' for example or your own scripts
+
 <a name="module_AB-equalizer"></a>
 
 ## AB-equalizer
@@ -145,6 +157,16 @@ Heavily inspired by [https://github.com/zurb/foundation-sites](https://github.co
 ## AB-mediaQuery
 That's the JavaScript side of Media Queries. That propose you some very usefull methodes to condition your scripts
 Heavily inspired by [https://github.com/zurb/foundation-sites](https://github.com/zurb/foundation-sites)
+
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| [options] | <code>object</code> |  | user options |
+| [options.small] | <code>string</code> | <code>&quot;639px&quot;</code> | max-width on small devices (mobiles) |
+| [options.medium] | <code>string</code> | <code>&quot;640px&quot;</code> | min-width on medium devices (tablets) |
+| [options.large] | <code>string</code> | <code>&quot;1024px&quot;</code> | min-width on large devices (small desktops) |
+| [options.xlarge] | <code>string</code> | <code>&quot;1200px&quot;</code> | min-width on large devices (medium desktops) |
+| [options.xxlarge] | <code>string</code> | <code>&quot;1440px&quot;</code> | min-width on large devices (big desktops) |
 
 **Example**  
 ```js

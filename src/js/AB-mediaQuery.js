@@ -6,6 +6,13 @@
  * That's the JavaScript side of Media Queries. That propose you some very usefull methodes to condition your scripts
  * Heavily inspired by {@link https://github.com/zurb/foundation-sites}
  *
+ * @param {object=} options - user options
+ * @param {string=} options.small=639px - max-width on small devices (mobiles)
+ * @param {string=} options.medium=640px - min-width on medium devices (tablets)
+ * @param {string=} options.large=1024px - min-width on large devices (small desktops)
+ * @param {string=} options.xlarge=1200px - min-width on large devices (medium desktops)
+ * @param {string=} options.xxlarge=1440px - min-width on large devices (big desktops)
+ *
  * @example
  * // Get current breakpoint:
  * AB.mediaQuery.current;

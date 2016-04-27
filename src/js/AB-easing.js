@@ -2,6 +2,14 @@
 
 // https://github.com/danro/jquery-easing/blob/master/jquery.easing.js
 
+/**
+ * @module AB-easing
+ * @desc
+ * This is a collection of easing functions that can be used when
+ * Taken from {@link https://github.com/danro/jquery-easing/blob/master/jquery.easing.js}
+ * You can use that in jQuery animations replacing 'easeInOutQuad' by 'AB.easeInOutQuad' for example or your own scripts
+ */
+
 var easing = {
 
   def: 'easeOutQuad',
