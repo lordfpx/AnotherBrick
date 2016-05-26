@@ -26,8 +26,8 @@
 function ScrollTo(opt) {
   if (!(this instanceof ScrollTo)) return new ScrollTo(opt);
 
-  this.settings   = AB.fn.extend({}, ScrollTo.defaults, opt);
-  this.trigger    = '[data-ab-scrollto], a[href*="#"]:not([href="#"])';
+  this.settings = AB.fn.extend({}, ScrollTo.defaults, opt);
+  this.trigger  = '[data-ab-scrollto], a[href*="#"]:not([href="#"])';
 
   this.init();
 }
@@ -42,45 +42,42 @@ ScrollTo.prototype = {
   init: function() {
     var that = this;
 
-    $(document)
-      .off('click.ab-scrollTo')
-      .on('click.ab-scrollTo', this.trigger, function(e) {
-        e.preventDefault();
-        var $this = $(this);
+    document.addEventListener('click', function(e) {
+      e.preventDefault();
+      var target = e.target;
 
-        if ($this.is('[data-ab-scrollto]')) {
-          that.getTarget($this);
+      if (target && AB.fn.selectorMatches(target, that.trigger)) {
+        if (AB.fn.selectorMatches(target, '[data-ab-scrollto]')) {
+          that.getTarget(target);
           return;
         }
-        that.getAnchor(this);
-      });
+        that.getAnchor(target);
+      }
+    });
   },
 
   // Get the target element from data-ab-scrollto
-  getTarget: function($el) {
-    var $target = $($el.data('ab-scrollto'));
-    if ($target.length) {
-      this.scroll($target);
-    }
+  getTarget: function(el) {
+    var targetSelector = el.getAttribute('data-ab-scrollto'),
+        target = document.querySelector(targetSelector);
+
+    if (!!target) this.scroll(target);
   },
 
   // Get the target element from href
   getAnchor: function(el) {
-    console.log(typeof el);
     var location = window.location;
 
     if (location.pathname.replace(/^\//, '') === el.pathname.replace(/^\//, '') && location.hostname === el.hostname) {
-      var $target = $(el.hash);
-      $target = $target.length ? $target : $('[name=' + el.hash.slice(1) + ']');
+      // search for element with ID or A with name attribute
+      var target = document.querySelector(el.hash) || document.querySelector('[name=' + el.hash.slice(1) + ']');
 
-      if ($target.length) {
-        this.scroll($target);
-      }
+      if (!!target) this.scroll(target);
     }
   },
 
   // Scroll to that element
-  scroll: function($target) {
+  scroll: function(target) {
     var that = this;
 
     // requestAnimationFrame for Smart Animating http://goo.gl/sx5sts
@@ -106,7 +103,7 @@ ScrollTo.prototype = {
     }
 
     var toPos = function(){
-      var val = $target.offset().top - that.settings.offset,
+      var val = target.offsetTop - that.settings.offset,
           limitPos = document.body.offsetHeight - window.innerHeight;
 
       if (val > limitPos) {
@@ -139,7 +136,7 @@ ScrollTo.prototype = {
       if (currentTime < that.settings.duration) {
         requestAnimFrame(animateScroll);
       } else {
-        $(document).trigger('scrolled.ab-scrollTo', [$target]);
+        $(document).trigger('scrolled.ab-scrollTo', [target]);
       }
     };
 

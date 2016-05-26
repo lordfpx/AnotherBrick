@@ -14,7 +14,7 @@ html(lang='en')
           li
             a(href="#scrollTo") scrollTo
           li
-            a(href="#interchange") Interchange
+            a(href="#", data-ab-scrollto="#interchange") Interchange
           li
             a(href="#equalizer") Equalizer
     
@@ -31,7 +31,8 @@ html(lang='en')
       data-ab-interchange="[img/cat-1x.jpg, small], [img/cat-2x.jpg, medium], [img/cat-3x.jpg, large]"
     )
     
-    h2#equalizer Equalizer
+    h2 Equalizer
+      a(name="equalizer")
     .row.data-ab-equalizer
       .col.data-ab-equalizer-watch
         h3(data-ab-equalizer="blockHeading") data-ab-equalizer="blockHeading"
