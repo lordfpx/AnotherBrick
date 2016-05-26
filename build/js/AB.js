@@ -394,7 +394,7 @@ Equalizer.prototype = {
     var that = this,
         $wrapper = $(selector);
 
-    AB.imagesLoaded($wrapper, function() {
+    AB.imagesLoaded(selector, function() {
       that._equalize($wrapper)
           ._watch(selector, $wrapper);
     });
@@ -504,33 +504,29 @@ module.exports = fn;
  * var imagesLoadedCallback = function() {
  *   console.log('imagesLoadedCallback: Images loaded');
  * };
- * AB.imagesLoaded( $('.some-element-wrapper'), imagesLoadedCallback );
+ * AB.imagesLoaded( '.some-element-wrapper', imagesLoadedCallback );
  */
 
-function imagesLoaded($wrapper, callback) {
-  var $images = $wrapper.find('img'),
-      unloaded = $images.length;
+function imagesLoaded(wrapper, callback) {
+  var images = document.querySelectorAll(wrapper + " img"),
+      unloaded = images.length;
 
-  if (unloaded === 0) {
-    callback();
-  }
+  if (unloaded === 0) callback();
 
   var singleImageLoaded = function() {
     unloaded--;
-    if (unloaded === 0) {
-      callback();
-    }
+    if (unloaded === 0) callback();
   };
 
-  for (var i = 0, len = unloaded; i < len; i++) {
-    var image = $images[i];
+  for (var i = 0; i < unloaded; i++) {
+    var image = images[i];
 
     if (image.complete) {
       singleImageLoaded();
-    } else if (typeof image.naturalWidth !== 'undefined' && image.naturalWidth >0) {
+    } else if (typeof image.naturalWidth !== 'undefined' && image.naturalWidth > 0) {
       singleImageLoaded();
     } else {
-      $(image).one('load', singleImageLoaded);
+      image.addEventListener('load', singleImageLoaded);
     }
   }
 }
@@ -961,9 +957,7 @@ ScrollTo.prototype = {
       var val = target.offsetTop - that.settings.offset,
           limitPos = document.body.offsetHeight - window.innerHeight;
 
-      if (val > limitPos) {
-        val = limitPos;
-      }
+      if (val > limitPos) val = limitPos;
       return val;
     };
 
@@ -973,12 +967,8 @@ ScrollTo.prototype = {
         currentTime = 0;
 
     var animateScroll = function(time) {
-      if (time === undefined) {
-        time = new Date().getTime();
-      }
-      if (startTime === null) {
-        startTime = time;
-      }
+      if (time === undefined) time = new Date().getTime();
+      if (startTime === null) startTime = time;
 
       currentTime = time-startTime;
 

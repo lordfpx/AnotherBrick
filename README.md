@@ -135,7 +135,7 @@ Heavily inspired by [https://github.com/zurb/foundation-sites](https://github.co
 var imagesLoadedCallback = function() {
   console.log('imagesLoadedCallback: Images loaded');
 };
-AB.imagesLoaded( $('.some-element-wrapper'), imagesLoadedCallback );
+AB.imagesLoaded( '.some-element-wrapper', imagesLoadedCallback );
 ```
 <a name="module_AB-interchange"></a>
 

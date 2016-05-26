@@ -106,9 +106,7 @@ ScrollTo.prototype = {
       var val = target.offsetTop - that.settings.offset,
           limitPos = document.body.offsetHeight - window.innerHeight;
 
-      if (val > limitPos) {
-        val = limitPos;
-      }
+      if (val > limitPos) val = limitPos;
       return val;
     };
 
@@ -118,12 +116,8 @@ ScrollTo.prototype = {
         currentTime = 0;
 
     var animateScroll = function(time) {
-      if (time === undefined) {
-        time = new Date().getTime();
-      }
-      if (startTime === null) {
-        startTime = time;
-      }
+      if (time === undefined) time = new Date().getTime();
+      if (startTime === null) startTime = time;
 
       currentTime = time-startTime;
 

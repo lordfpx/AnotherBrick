@@ -11,7 +11,7 @@ AB.about();
 var imagesLoadedCallback = function() {
   console.log('AB.imagesLoaded ==>', 'images inside $("[data-ab-equalizer]") loaded');
 };
-AB.imagesLoaded($('[data-ab-equalizer]'), imagesLoadedCallback);
+AB.imagesLoaded('[data-ab-equalizer]', imagesLoadedCallback);
 
 // device detection: return true or false
 console.log(

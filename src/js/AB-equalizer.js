@@ -72,7 +72,7 @@ Equalizer.prototype = {
     var that = this,
         $wrapper = $(selector);
 
-    AB.imagesLoaded($wrapper, function() {
+    AB.imagesLoaded(selector, function() {
       that._equalize($wrapper)
           ._watch(selector, $wrapper);
     });
