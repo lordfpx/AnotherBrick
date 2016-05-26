@@ -46,9 +46,8 @@ console.log("AB.deviceDetect.isTouch() ==>", AB.deviceDetect.isTouch()); // retu
 */
 
 AB.init({
-  // mediaQuery plugin is ALWAYS initialized, but you can override default settings here if:
+  // mediaQuery plugin is ALWAYS initialized, but you can override default settings here ONLY if:
   // - you are not using Sass technic (I don't recommand)
-  // - you don't want default values (this example show default values, so no need to do that!)
   mediaQuery: {
     small: "639px",
     medium: "640px",

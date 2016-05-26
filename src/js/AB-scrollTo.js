@@ -24,12 +24,10 @@
  * <div data-ab-scrollto=".target">...</div>
  */
 function ScrollTo(opt) {
-  if (!(this instanceof ScrollTo)) {
-    return new ScrollTo(opt);
-  }
+  if (!(this instanceof ScrollTo)) return new ScrollTo(opt);
 
-  this.settings = $.extend({}, ScrollTo.defaults, opt);
-  this.trigger = '[data-ab-scrollto], a[href*="#"]:not([href="#"])';
+  this.settings   = AB.fn.extend({}, ScrollTo.defaults, opt);
+  this.trigger    = '[data-ab-scrollto], a[href*="#"]:not([href="#"])';
 
   this.init();
 }

@@ -9,10 +9,10 @@
  * The idea behind this project is to give you bricks of JavaScripts to solve usual design difficulties.
 */
 window.AB = (function(){
-  var name = "AB - Another Brick on the web";
-  var description = "Plugins collection to solve everyday problems in web sites development";
-  var version = "0.1.0";
-  var author = "Thierry Philippe - www.thierryphilippe.fr";
+  var name = "AB - Another Brick on the web",
+      description = "Plugins collection to solve everyday problems in web sites development",
+      version = "0.1.0",
+      author = "Thierry Philippe - www.thierryphilippe.fr";
 
   return {
     /**
@@ -53,15 +53,12 @@ window.AB = (function(){
       AB.userSettings = plugins;
 
       // mandatory plugins
-      if (!plugins.hasOwnProperty('mediaQuery')) {
-        AB.mediaQuery();
-      }
+      if (!plugins.hasOwnProperty('mediaQuery')) AB.mediaQuery();
 
       // init add-ons
       for (var plugin in plugins) {
-        if (plugins.hasOwnProperty(plugin)) {
-          AB[plugin](plugins[plugin]);
-        }
+        if (!plugins.hasOwnProperty(plugin)) continue;
+        AB[plugin](plugins[plugin]);
       }
     },
 
@@ -74,7 +71,7 @@ window.AB = (function(){
 
     equalizer:      require('../js/AB-equalizer'),      // user's choice
     scrollTo:       require('../js/AB-scrollTo'),       // user's choice
-    interchange:    require('../js/AB-interchange'),     // user's choice
+    interchange:    require('../js/AB-interchange'),    // user's choice
 
     /**
      * @static
@@ -88,9 +85,8 @@ window.AB = (function(){
 
       for (var plugin in plugins) {
         if (plugin !== "mediaQuery") { // mediaQuery can't be reinit
-          if (plugins.hasOwnProperty(plugin)) {
-            AB[plugin](plugins[plugin]);
-          }
+          if (!plugins.hasOwnProperty(plugin)) continue;
+          AB[plugin](plugins[plugin]);
         }
       }
     },
@@ -368,14 +364,11 @@ function uniqueElByAttributeValue($elArray, attribute) {
  * </div>
  */
 function Equalizer(element, opt) {
-  if (!(this instanceof Equalizer)) {
-    return new Equalizer(element, opt);
-  }
+  if (!(this instanceof Equalizer)) return new Equalizer(element, opt);
 
-  this.settings = $.extend({}, Equalizer.defaults, opt);
-
-  this.$el = $(element);
-  this.resizeEvent = {};
+  this.settings     = AB.fn.extend({}, Equalizer.defaults, opt);
+  this.$el          = $(element);
+  this.resizeEvent  = {};
 
   this.init();
 }
@@ -469,6 +462,18 @@ var fn = {
       return false;
     }
     return true;
+  },
+
+  // extend objects
+  extend: function(){
+    for(var i=1; i<arguments.length; i++) {
+      for(var key in arguments[i]) {
+        if(arguments[i].hasOwnProperty(key)) {
+          arguments[0][key] = arguments[i][key];
+        }
+      }
+    }
+    return arguments[0];
   }
 
 };
@@ -540,14 +545,11 @@ module.exports = imagesLoaded;
  * <div data-ab-interchange="[img/cat-1x.jpg, small], [img/cat-2x.jpg, medium], [img/cat-3x.jpg, large]"></div>
  */
 var Interchange = function(element, opt) {
-  if (!(this instanceof Interchange)) {
-    return new Interchange(element, opt);
-  }
+  if (!(this instanceof Interchange)) return new Interchange(element, opt);
 
-  this.settings = $.extend({}, Interchange.defaults, opt);
-
+  this.settings = AB.fn.extend({}, Interchange.defaults, opt);
   this.$element = $(element);
-  this.rules = [];
+  this.rules    = [];
 
   this.init()
       ._events();
@@ -693,13 +695,11 @@ module.exports = interchange;
  * // => return something like "only screen and (max-width: 639px)"
  */
 var MediaQuery = function(opt) {
-  if (!(this instanceof MediaQuery)) {
-    return new MediaQuery(opt);
-  }
+  if (!(this instanceof MediaQuery)) return new MediaQuery(opt);
 
-  this.settings = $.extend({}, MediaQuery.defaults, opt);
-  this.queries = [];
-  this.current = '';
+  this.settings = AB.fn.extend({}, MediaQuery.defaults, opt);
+  this.queries  = [];
+  this.current  = '';
 
   this.init();
 };
@@ -869,12 +869,10 @@ module.exports = mediaQuery;
  * <div data-ab-scrollto=".target">...</div>
  */
 function ScrollTo(opt) {
-  if (!(this instanceof ScrollTo)) {
-    return new ScrollTo(opt);
-  }
+  if (!(this instanceof ScrollTo)) return new ScrollTo(opt);
 
-  this.settings = $.extend({}, ScrollTo.defaults, opt);
-  this.trigger = '[data-ab-scrollto], a[href*="#"]:not([href="#"])';
+  this.settings   = AB.fn.extend({}, ScrollTo.defaults, opt);
+  this.trigger    = '[data-ab-scrollto], a[href*="#"]:not([href="#"])';
 
   this.init();
 }

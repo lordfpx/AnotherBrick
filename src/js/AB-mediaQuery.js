@@ -36,13 +36,11 @@
  * // => return something like "only screen and (max-width: 639px)"
  */
 var MediaQuery = function(opt) {
-  if (!(this instanceof MediaQuery)) {
-    return new MediaQuery(opt);
-  }
+  if (!(this instanceof MediaQuery)) return new MediaQuery(opt);
 
-  this.settings = $.extend({}, MediaQuery.defaults, opt);
-  this.queries = [];
-  this.current = '';
+  this.settings = AB.fn.extend({}, MediaQuery.defaults, opt);
+  this.queries  = [];
+  this.current  = '';
 
   this.init();
 };

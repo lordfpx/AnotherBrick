@@ -42,14 +42,11 @@ function uniqueElByAttributeValue($elArray, attribute) {
  * </div>
  */
 function Equalizer(element, opt) {
-  if (!(this instanceof Equalizer)) {
-    return new Equalizer(element, opt);
-  }
+  if (!(this instanceof Equalizer)) return new Equalizer(element, opt);
 
-  this.settings = $.extend({}, Equalizer.defaults, opt);
-
-  this.$el = $(element);
-  this.resizeEvent = {};
+  this.settings     = AB.fn.extend({}, Equalizer.defaults, opt);
+  this.$el          = $(element);
+  this.resizeEvent  = {};
 
   this.init();
 }

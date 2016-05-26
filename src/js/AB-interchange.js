@@ -15,14 +15,11 @@
  * <div data-ab-interchange="[img/cat-1x.jpg, small], [img/cat-2x.jpg, medium], [img/cat-3x.jpg, large]"></div>
  */
 var Interchange = function(element, opt) {
-  if (!(this instanceof Interchange)) {
-    return new Interchange(element, opt);
-  }
+  if (!(this instanceof Interchange)) return new Interchange(element, opt);
 
-  this.settings = $.extend({}, Interchange.defaults, opt);
-
+  this.settings = AB.fn.extend({}, Interchange.defaults, opt);
   this.$element = $(element);
-  this.rules = [];
+  this.rules    = [];
 
   this.init()
       ._events();
