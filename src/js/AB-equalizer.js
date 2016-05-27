@@ -19,28 +19,6 @@ function uniqueElByAttributeValue($elArray, attribute) {
 }
 
 
-/**
- * @module AB-equalizer
- * @desc
- * This plugin will allow you to equalize elements with data-ab-equalize. All elements with the same value will be equalized.
- *
- * @example
- * AB.init({
- *   equalizer: {}
- * });
- *
- * // Usage
- * <div data-ab-equalize="someID">
- *   Lorem ipsum dolor sit amet,
- *   consectetur adipisicing elit. Minima hic debitis ut consectetur.
- *   Molestias quod dolore veniam, rem nostrum modi nulla a, et veritatis,
- *   nobis quae error quidem illo ea.
- * </div>
- *
- * <div data-ab-equalize="someID">
- *   Lorem
- * </div>
- */
 function Equalizer(element, opt) {
   if (!(this instanceof Equalizer)) return new Equalizer(element, opt);
 

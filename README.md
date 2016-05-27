@@ -14,7 +14,7 @@ Initialize AB with or without custom parameters.
 
     // Initialize AB with default settings
     AB.init();
-    
+
     // Initialize with personal settings, for example:
     AB.init({
       mediaQuery: {
@@ -51,11 +51,11 @@ Activate smooth scroll on anchor links and to elements specified in data-ab-scro
 
 
     // Usage with normal anchor links
-    <a href="#target">...</a> 
+    <a href="#target">...</a>
     <div id="target">...</div>
     // or
     <a name="target"></a>
-    
+
     // Usage for specific cases
     <button data-ab-scrollto=".target">...</button>
     <div class="target">...</div>
@@ -71,7 +71,7 @@ An easy way to detect browser and OS, it also detect touch devices (far from bei
 
     AB.deviceDetect.get('browser', 'any');
     // => return true or false
-    
+
     AB.deviceDetect.isTouch();
     // => return true on touch devices
 
@@ -84,7 +84,7 @@ This plugin will allow you to equalize elements with data-ab-equalize. All eleme
     AB.init({
       equalizer: {}
     });
-    
+
     // Usage
     <div data-ab-equalize="someID">
       Lorem ipsum dolor sit amet,
@@ -94,7 +94,7 @@ This plugin will allow you to equalize elements with data-ab-equalize. All eleme
     </div>
     <div data-ab-equalize="someID">
       Lorem
-    </div> 
+    </div>
 
 AB.fn
 -----
@@ -127,13 +127,13 @@ Heavily inspired by https://github.com/zurb/foundation-sites.
 
     // loading of img source:
     <img src="" data-ab-interchange="[img/cat-1x.jpg, small], [img/cat-2x.jpg, medium], [img/cat-3x.jpg, large]">
-    
+
     // background-image:
     <div data-ab-interchange="[img/cat-1x.jpg, small], [img/cat-2x.jpg, medium], [img/cat-3x.jpg, large]"></div>
 
 AB-mediaQuery
 -------------
-That's the JavaScript side of Media Queries. 
+That's the JavaScript side of Media Queries.
 It propose you some very useful methods to condition your scripts.
 Heavily inspired by https://github.com/zurb/foundation-sites.
 
@@ -150,20 +150,21 @@ Heavily inspired by https://github.com/zurb/foundation-sites.
     // Get current breakpoint:
     AB.mediaQuery.current;
     // => return current breakpoint (small, medium, large, xlarge, xxlarge)
-    
+
     // Match specific breakpoint:
     AB.mediaQuery.atLeast('small');
-    // => return true or false 
-    
+    // => return true or false
+
     // Listener on breakpoint change:
     $(window).on('changed.ab-mediaquery', function(e, newSize, current) {
      console.log(newSize, current);
     });
-    // => will display something like: small large 
-    
+    // => will display something like: small large
+
     // List queries object:
-    AB.mediaQuery.getQueries(); 
-    
+    AB.mediaQuery.getQueries();
+
     // Return real media-query from breakpoint name:
     AB.mediaQuery.get('small');
     // => return something like "only screen and (max-width: 639px)"
+
