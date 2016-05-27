@@ -1,0 +1,63 @@
+doctype html
+html(lang='en')
+  head
+    meta(charset='UTF-8')
+    title Document
+    
+    link(href="css/main.css", rel="stylesheet")
+  body
+    header
+      h1 AB - Another Brick (on the web)
+
+      nav
+        ul
+          li
+            a(href="#scrollTo") scrollTo
+          li
+            a(href="#", data-ab-scrollto="#interchange") Interchange
+          li
+            a(href="#equalizer") Equalizer
+    
+    h2#scrollTo scrollTo
+    p Scroll with <strong data-ab-scrollto=".scrollTo">data-ab-scrollto=".scrollTo"</strong> or with anchor links href="#scrollTo".
+    
+    h2#interchange Interchange
+    h3 ...with img elements
+    img(src="", data-ab-interchange="[img/cat-1x.jpg, small], [img/cat-2x.jpg, medium], [img/cat-3x.jpg, large]")
+
+    h3 ...with CSS background-image 
+    div(
+      style="height: 200px"
+      data-ab-interchange="[img/cat-1x.jpg, small], [img/cat-2x.jpg, medium], [img/cat-3x.jpg, large]"
+    )
+    
+    h2 Equalizer
+      a(name="equalizer")
+    .row.data-ab-equalizer
+      .col.data-ab-equalizer-watch
+        h3(data-ab-equalizer="blockHeading") data-ab-equalizer="blockHeading"
+        div(data-ab-equalizer="blockContent")
+          p data-ab-equalizer="blockContent"
+          p consectetur adipisicing elit. Minima hic debitis ut consectetur.
+          p Molestias quod dolore veniam, rem nostrum modi nulla a, et veritatis,
+
+      .col.data-ab-equalizer-watch
+        h3(data-ab-equalizer="blockHeading") 
+          | data-ab-equalizer="blockHeading"
+          br
+          | ...with a title
+          br
+          | ... even longer
+        div(data-ab-equalizer="blockContent")
+          p data-ab-equalizer="blockContent"
+          p Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sunt explicabo, repellat illum eum ex enim! Molestias qui in placeat obcaecati et saepe quibusdam veritatis deserunt, asperiores, alias impedit eum, veniam.
+          p Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sunt explicabo, repellat illum eum ex enim! Molestias qui in placeat obcaecati et saepe quibusdam veritatis deserunt, asperiores, alias impedit eum, veniam.
+          img(src="http://img1.mxstatic.com/wallpapers/5b4b2205335de6b257c9d12f04e56058_large.jpeg")
+        
+    .scrollTo scrollTo test from <strong data-ab-scrollto=".scrollTo">data-ab-scrollto=".scrollTo"</strong>
+
+
+    script(src="//code.jquery.com/jquery-2.2.0.min.js")
+    script(src="js/AB.js")
+    script(src="js/example-usage.js")
+     

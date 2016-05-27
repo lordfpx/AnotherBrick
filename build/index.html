@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <link href="css/main.css" rel="stylesheet">
+  </head>
+  <body>
+    <header>
+      <h1>AB - Another Brick (on the web)</h1>
+      <nav>
+        <ul>
+          <li><a href="#scrollTo">scrollTo</a></li>
+          <li><a href="#" data-ab-scrollto="#interchange">Interchange</a></li>
+          <li><a href="#equalizer">Equalizer</a></li>
+        </ul>
+      </nav>
+    </header>
+    <h2 id="scrollTo">scrollTo</h2>
+    <p>Scroll with <strong data-ab-scrollto=".scrollTo">data-ab-scrollto=".scrollTo"</strong> or with anchor links href="#scrollTo".</p>
+    <h2 id="interchange">Interchange</h2>
+    <h3>...with img elements</h3><img src="" data-ab-interchange="[img/cat-1x.jpg, small], [img/cat-2x.jpg, medium], [img/cat-3x.jpg, large]">
+    <h3>...with CSS background-image </h3>
+    <div style="height: 200px" data-ab-interchange="[img/cat-1x.jpg, small], [img/cat-2x.jpg, medium], [img/cat-3x.jpg, large]"></div>
+    <h2>Equalizer<a name="equalizer"></a></h2>
+    <div class="row data-ab-equalizer">
+      <div class="col data-ab-equalizer-watch">
+        <h3 data-ab-equalizer="blockHeading">data-ab-equalizer="blockHeading"</h3>
+        <div data-ab-equalizer="blockContent">
+          <p>data-ab-equalizer="blockContent"</p>
+          <p>consectetur adipisicing elit. Minima hic debitis ut consectetur.</p>
+          <p>Molestias quod dolore veniam, rem nostrum modi nulla a, et veritatis,</p>
+        </div>
+      </div>
+      <div class="col data-ab-equalizer-watch">
+        <h3 data-ab-equalizer="blockHeading">
+           
+          data-ab-equalizer="blockHeading"<br>...with a title<br>... even longer
+        </h3>
+        <div data-ab-equalizer="blockContent">
+          <p>data-ab-equalizer="blockContent"</p>
+          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sunt explicabo, repellat illum eum ex enim! Molestias qui in placeat obcaecati et saepe quibusdam veritatis deserunt, asperiores, alias impedit eum, veniam.</p>
+          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sunt explicabo, repellat illum eum ex enim! Molestias qui in placeat obcaecati et saepe quibusdam veritatis deserunt, asperiores, alias impedit eum, veniam.</p><img src="http://img1.mxstatic.com/wallpapers/5b4b2205335de6b257c9d12f04e56058_large.jpeg">
+        </div>
+      </div>
+    </div>
+    <div class="scrollTo">scrollTo test from <strong data-ab-scrollto=".scrollTo">data-ab-scrollto=".scrollTo"</strong></div>
+    <script src="//code.jquery.com/jquery-2.2.0.min.js"></script>
+    <script src="js/AB.js"></script>
+    <script src="js/example-usage.js"></script>
+  </body>
+</html>
